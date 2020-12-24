@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">StudyReactNative</string>
+    <string name="facebook_app_id">1326550657680795</string>
+    <string name="default_notification_channel_id" translatable="false">notifications</string>
+    <string name="facebook_application_id" translatable="false">1326550657680795</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1326550657680795</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1326550657680795</string>
+</resources>

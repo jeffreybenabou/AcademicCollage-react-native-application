@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>639569907370-qkrsom0dmb34kl93gvt8q5huf892672c.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.639569907370-qkrsom0dmb34kl93gvt8q5huf892672c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>639569907370-0unfv1mcde1ho0c2ke67ip41l23i176t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDSTiD0LmZITAyXjCSmnrQPLl0jY8q90To</string>
+	<key>GCM_SENDER_ID</key>
+	<string>639569907370</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>jeffrey.study</string>
+	<key>PROJECT_ID</key>
+	<string>android-course-jeffrey</string>
+	<key>STORAGE_BUCKET</key>
+	<string>android-course-jeffrey.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:639569907370:ios:3664455016b31167268ad3</string>
+	<key>DATABASE_URL</key>
+	<string>https://android-course-jeffrey.firebaseio.com</string>
+</dict>
+</plist>

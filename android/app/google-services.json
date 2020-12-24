@@ -1,0 +1,88 @@
+{
+  "project_info": {
+    "project_number": "639569907370",
+    "firebase_url": "https://android-course-jeffrey.firebaseio.com",
+    "project_id": "android-course-jeffrey",
+    "storage_bucket": "android-course-jeffrey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639569907370:android:d7097b1b2f05958e268ad3",
+        "android_client_info": {
+          "package_name": "com.jeffrey.academiccollage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639569907370-1rl0ehlijd04qlvbja5ll653f5l9lmth.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jeffrey.academiccollage",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "639569907370-ln4et7gt5h1519bp2gi8ufnk2v3hpfjd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jeffrey.academiccollage",
+            "certificate_hash": "03414b06cd8e267a77a21cfd7be8c3ea5cbc4fdd"
+          }
+        },
+        {
+          "client_id": "639569907370-0unfv1mcde1ho0c2ke67ip41l23i176t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jeffrey.academiccollage",
+            "certificate_hash": "c7dd412bec8b4dd995926ee3251372450cda1889"
+          }
+        },
+        {
+          "client_id": "639569907370-hr8j0co4bikgvr3u0f2uoulg6q4ol86d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jeffrey.academiccollage",
+            "certificate_hash": "82b6bc0db5e4897827f50c6b9639975d85c8f007"
+          }
+        },
+        {
+          "client_id": "639569907370-mbb4serqj1gkhv7a8hdjn4gvc0k4r3f1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jeffrey.academiccollage",
+            "certificate_hash": "77c9c6bc7104d690e37e5443bc217a45918e064a"
+          }
+        },
+        {
+          "client_id": "639569907370-8ul1g64c15ge767i0cp96k4etieo249l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHtNbZ2I2cJgFNEu-XK-HoV4NxyAUgsn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639569907370-5l0lt7r9isk0q72r3krf73la975sd0h8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "639569907370-6boat8n4rb22grq2q8mauhtkcto9bpjs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jeffrey.Study"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-1901519090884740~1894578208"
+    }
+  ],
+  "configuration_version": "1"
+}
