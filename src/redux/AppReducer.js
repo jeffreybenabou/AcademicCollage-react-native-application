@@ -10,6 +10,7 @@ import {DEFINITIONS, TYPE_OF_SNACK_BAR} from "../utils";
 
 const initialState = {
     [DEFINITIONS.KEYBOARD_HEIGHT]:0,
+    [DEFINITIONS.SHOW_SPLASH_SCREEN]:true,
     [DEFINITIONS.IS_LOG_IN]: false,
     [DEFINITIONS.SNACK_BAR]:{
         [DEFINITIONS.SHOW_SNACK_BAR]:false,

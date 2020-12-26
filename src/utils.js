@@ -27,7 +27,7 @@ export let HEIGHT_OF_SCREEN = SCREEN_HEIGHT;
 export let WIDTH_OF_SCREEN = SCREEN_WIDTH;
 import Ripple from 'react-native-material-ripple';
 import {RESULTS} from "react-native-permissions";
-
+import FastImage from "react-native-fast-image";
 
 export const languageRestart = async () => {
 
@@ -68,6 +68,7 @@ export const TYPE_OF_SNACK_BAR = {
 }
 export const DEFINITIONS = {
     IS_LOG_IN: 'isLogIn',
+    SHOW_SPLASH_SCREEN:'splashScreen',
     TEXT_SIZE: 'textSize',
     KEYBOARD_HEIGHT:'keyboardHeight',
     TEXT_ON_HEADER: 'textOnHeader',
@@ -249,6 +250,14 @@ export const ICON_TYPES = {
     DRAWER:'menu'
 
 
+}
+export const SplashScreen=()=>{
+    return <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:APP_COLOR.screenBackground,width:WIDTH_OF_SCREEN,height:HEIGHT_OF_SCREEN}}>
+        <FastImage style={{height:HEIGHT_OF_SCREEN/2,width: WIDTH_OF_SCREEN/1.5}} resizeMode={"contain"} source={require("../res/images/logo.png")}/>
+        <Text style={{fontSize:calculateFontSizeByScreen(20),color:'black',marginVertical:'5%'}}>תכף עולים...</Text>
+        <ActivityIndicator animating={true} size={WIDTH_OF_SCREEN/10} color={APP_COLOR.iconColor}/>
+
+    </View>
 }
 
 export const requestPermission = (permission) => {

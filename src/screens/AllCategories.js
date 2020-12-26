@@ -152,27 +152,32 @@ const AllCategories = (props) => {
                                     })
                                 }}
                                 children={
-                                    <View style={{height: HEIGHT_OF_SCREEN / 3}}>
-                                        <View style={{
-                                            borderRadius: WIDTH_OF_SCREEN / 50,
-                                            margin: '1%',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            zIndex: 100,
-                                            backgroundColor: 'rgba(256,256,256,0.8)',
-                                            position: 'absolute'
-                                        }}>
-                                            <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.FULL_SCREEN}/>
-                                        </View>
-                                        <FastImage resizeMode={"contain"} style={{
-                                            backgroundColor: 'white',
-                                            width: WIDTH_OF_SCREEN / 1.2,
-                                            height:'100%'
 
-                                        }}
-                                               source={{uri: item[item2].toString().replace("!image!", "")}}/>
 
-                                    </View>
+                                        <FastImage
+                                            resizeMode={"stretch"}
+                                            style={{
+                                                borderRadius:WIDTH_OF_SCREEN/50,
+                                                backgroundColor: 'white',
+                                                width: WIDTH_OF_SCREEN / 1.2,
+                                                height: HEIGHT_OF_SCREEN/3,
+                                                marginBottom:HEIGHT_OF_SCREEN/50
+
+                                            }}
+                                            source={{uri: item[item2].toString().replace("!image!", "")}}>
+                                            <View style={{
+                                                borderRadius: WIDTH_OF_SCREEN / 50,
+                                                margin: '1%',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                zIndex: 100,
+                                                backgroundColor: 'rgba(256,256,256,0.8)',
+                                                position: 'absolute'
+                                            }}>
+                                                <SetIcon iconSize={0} iconType={ICON_TYPES.FULL_SCREEN}/>
+                                            </View>
+                                        </FastImage>
+
                                 }
 
 
@@ -273,6 +278,7 @@ const AllCategories = (props) => {
 
 
             <FlatList
+                ListEmptyComponent={<View style={{flex:1,height:HEIGHT_OF_SCREEN}}></View>}
                 keyExtractor={(item, index) => "" + index + "" + item.text}
                 data={buttonsPlaceHolder}
                 renderItem={(item2) => {

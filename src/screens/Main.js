@@ -16,7 +16,7 @@ import {
     DEFINITIONS,
     HEIGHT_OF_SCREEN,
     languageRestart,
-    WIDTH_OF_SCREEN, isNotUndefined, getData, Popup
+    WIDTH_OF_SCREEN, isNotUndefined, getData, Popup, SplashScreen
 } from "../utils";
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
@@ -31,12 +31,17 @@ import { getAppstoreAppMetadata } from "react-native-appstore-version-checker";
 
 const Main = (props) => {
     useEffect(() => {
+
         setListeners();
         checkRtl();
         checkVersion();
         checkIfUserIsConnected();
+        checkIfUnderMaintain();
     }, [])
 
+    const checkIfUnderMaintain=()=>{
+
+    }
     const setListeners=()=>{
         Keyboard.addListener("keyboardDidShow", (e)=>{
             props[SET_STATE]({
@@ -136,11 +141,15 @@ const Main = (props) => {
                 [DEFINITIONS.TEXT_SIZE]: fontSize,
                 [DEFINITIONS.COURSE_CODE]: sourceCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
-                [DEFINITIONS.USER]: user
+                [DEFINITIONS.USER]: user,
+                [DEFINITIONS.SHOW_SPLASH_SCREEN]:false
             })
 
 
-        }
+        }else
+        props[SET_STATE]({
+            [DEFINITIONS.SHOW_SPLASH_SCREEN]:false
+        })
 
     }
     const SnackBar = (props2) => {
@@ -270,6 +279,8 @@ const Main = (props) => {
         }}>
 
             {
+                props[DEFINITIONS.SHOW_SPLASH_SCREEN]?
+                    <SplashScreen/>:
                 props[DEFINITIONS.IS_LOG_IN] ?
                     <Drawer props={props}/>
                     :
