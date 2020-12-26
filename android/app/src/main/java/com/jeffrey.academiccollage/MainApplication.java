@@ -11,7 +11,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.facebook.FacebookSdk;
-
+import android.os.Build;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -47,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     FacebookSdk.sdkInitialize(getApplicationContext());
+
   }
 
   /**
@@ -56,6 +57,21 @@ public class MainApplication extends Application implements ReactApplication {
    * @param context
    * @param reactInstanceManager
    */
+   /* private void createNotificationChannel() {
+       // Create the NotificationChannel, but only on API 26+ because
+       // the NotificationChannel class is new and not in the support library
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           CharSequence name = getString("notifications");
+           String description = getString("קבלת נוטיפיקציות");
+           int importance = NotificationManager.IMPORTANCE_HIGH;
+           NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+           channel.setDescription(description);
+           // Register the channel with the system; you can't change the importance
+           // or other notification behaviors after this
+           NotificationManager notificationManager = getSystemService(NotificationManager.class);
+           notificationManager.createNotificationChannel(channel);
+       }
+   } */
   private static void initializeFlipper(
       Context context, ReactInstanceManager reactInstanceManager) {
     if (BuildConfig.DEBUG) {

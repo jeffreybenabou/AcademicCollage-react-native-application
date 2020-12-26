@@ -8,10 +8,11 @@ import {
     CustomInput, DEFINITIONS,
     elevationShadowStyle,
     HEIGHT_OF_SCREEN,
-    ICON_TYPES,
+    ICON_TYPES, TYPE_OF_SNACK_BAR,
     WIDTH_OF_SCREEN
 } from "../utils";
 import firestore from '@react-native-firebase/firestore'
+import {SET_STATE} from "../redux/types";
 
 export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
     const [value, setValue] = useState('');
@@ -26,7 +27,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             setHomeWorkObject({})
         });
         HomeWorkAndSolutionProps.navigation.addListener('focus', async () => {
-           loadDataFromFireBase();
+            loadDataFromFireBase();
         });
 
         loadDataFromFireBase();
@@ -45,7 +46,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             })*/
     }, [])
 
-    const loadDataFromFireBase=()=>{
+    const loadDataFromFireBase = () => {
         firestore()
             .collection(HomeWorkAndSolutionProps[DEFINITIONS.COURSE_CODE]).doc("homeWork").get().then((items) => {
             const filteredData = [];
@@ -74,17 +75,19 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             }}
             text={itemProps.item.titleOfWork}
             textStyle={{
+                height:'100%',
                 textAlign: 'center',
                 color: 'white',
-                fontSize:calculateFontSizeByScreen(14+HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+
+                fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
             }}
             style={{
                 borderRadius: HEIGHT_OF_SCREEN / 50,
                 marginEnd: WIDTH_OF_SCREEN / 30,
-                width: undefined,
+
                 alignSelf: 'flex-start',
-                alignItems: 'center',
-                padding: WIDTH_OF_SCREEN / 20,
+
+                padding: WIDTH_OF_SCREEN / 30,
                 justifyContent: 'center',
                 backgroundColor: APP_COLOR.main,
             }}
@@ -100,10 +103,15 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             <CustomInput
                 value={value}
                 textStyle={{
-                    fontSize:calculateFontSizeByScreen(14+HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                    fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
                 }}
                 onChangeText={(value) => {
-                    setValue(value)
+                    setValue(value);
+                    const searchResult=data.filter((item)=>{
+                        return item.title.includes(value)||item.titleOfWork.includes(value)||item.subTitle.includes(value)
+                    })
+                    setFilteredData(searchResult)
+
                 }}
 
                 style={{
@@ -133,7 +141,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                 margin: '5%',
                 borderRadius: WIDTH_OF_SCREEN / 30, ...elevationShadowStyle(3)
             }}>
-                <ScrollView>
+                <ScrollView style={{marginBottom: HEIGHT_OF_SCREEN / 15,}}>
                     {
                         Object.values(homeWorkObject).map((item) => {
                             if (item.includes("%b%")) {
@@ -142,14 +150,14 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                                     style={{
                                         textAlign: 'left',
                                         padding: '2%',
-                                        fontSize:calculateFontSizeByScreen(14+HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                                        fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
                                     }}>{item.replace("%b%", "")}</Text>
                             } else {
                                 return <Text style={{
-                                    fontSize:calculateFontSizeByScreen(14+HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE]),
+                                    fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE]),
                                     textAlign: 'left',
                                     paddingHorizontal: '2%'
-                                }}>{item.replaceAll("~", "\n")}</Text>
+                                }}>{item.replace(/~/g, "\n")}</Text>
 
                             }
                         })
@@ -160,7 +168,21 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     textStyle={{
                         textAlign: 'center',
                         color: 'white',
-                        fontSize:calculateFontSizeByScreen(14+HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                        fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                    }}
+                    onPress={() => {
+                        HomeWorkAndSolutionProps[SET_STATE]({
+                            [DEFINITIONS.SNACK_BAR]:
+                                {
+                                    [DEFINITIONS.SHOW_SNACK_BAR]: true,
+                                    [DEFINITIONS.ACTION_ON_SNACK_BAR]: () => {
+                                    },
+                                    [DEFINITIONS.SNACK_BAR_TYPE]: TYPE_OF_SNACK_BAR.WARNING,
+                                    [DEFINITIONS.TITLE_ON_SNACK_BAR]: 'שים לב!',
+                                    [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'פתרון לתרגיל זה אינו זמין כרגע.',
+
+                                }
+                        })
                     }}
 
                     text={"פתרון התרגיל"}
@@ -182,13 +204,13 @@ const style = StyleSheet.create({
         flex: 1,
         backgroundColor: APP_COLOR.main,
     },
-    solutionButton:{
-        borderBottomRightRadius:WIDTH_OF_SCREEN / 30,
-        borderBottomLeftRadius:WIDTH_OF_SCREEN / 30,
+    solutionButton: {
+        borderBottomRightRadius: WIDTH_OF_SCREEN / 30,
+        borderBottomLeftRadius: WIDTH_OF_SCREEN / 30,
         alignItems: 'center',
         justifyContent: 'center',
-        position:'absolute',
-        bottom:0,
+        position: 'absolute',
+        bottom: 0,
         backgroundColor: APP_COLOR.main,
 
         height: HEIGHT_OF_SCREEN / 15,

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StudyReactNative</string>
+    <string name="app_name">Mobile Course</string>
     <string name="facebook_app_id">1326550657680795</string>
     <string name="default_notification_channel_id" translatable="false">notifications</string>
     <string name="facebook_application_id" translatable="false">1326550657680795</string>

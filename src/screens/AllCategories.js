@@ -31,6 +31,7 @@ import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import ImageZoom from 'react-native-image-pan-zoom';
 import functions from "@react-native-firebase/functions";
 import messaging from '@react-native-firebase/messaging'
+
 const AllCategories = (props) => {
     const [lessons, setLessons] = useState([])
     const [openLessons, setOpenLessons] = useState([]);
@@ -220,20 +221,20 @@ const AllCategories = (props) => {
         setOpenLessons(openLessons2);
     }
     const loadLessonsNamesFromFB = async () => {
-       /* await firestore()
-            .collection("webHomeWork")
-            .get()
-            .then((lessons) => {
+        /* await firestore()
+             .collection("webHomeWork")
+             .get()
+             .then((lessons) => {
 
-                let a= {};
-                lessons.docs.map((item,index)=>{
-                    a={...a,[index<9?index:"9"+index]:item.data()}
+                 let a= {};
+                 lessons.docs.map((item,index)=>{
+                     a={...a,[index<9?index:"9"+index]:item.data()}
 
-                })
-                 firestore()
-                    .collection("web2020").doc("homeWork").set(a)
+                 })
+                  firestore()
+                     .collection("web2020").doc("homeWork").set(a)
 
-            })*/
+             })*/
 
         await firestore()
             .collection("" + props[DEFINITIONS.COURSE_CODE])
@@ -274,82 +275,90 @@ const AllCategories = (props) => {
             }}>
 
 
-            <FlatList keyExtractor={(item, index) => "" + index + "" + item.text} data={buttonsPlaceHolder}
-                      renderItem={(item2) => {
+            <FlatList
+                keyExtractor={(item, index) => "" + index + "" + item.text}
+                data={buttonsPlaceHolder}
+                renderItem={(item2) => {
 
-                          const item = item2.item;
+                    const item = item2.item;
 
-                          return <View style={{alignItems: 'center'}}>
-                              <CustomButton
-                                  textStyle={{
-                                      flex: 1,
-                                      color: !item.visible ? '#acacac' : isNotUndefined(item.type) ? "white" : '#4A65E3',
-                                      fontWeight: 'bold',
-                                      fontSize: calculateFontSizeByScreen(15 + props[DEFINITIONS.TEXT_SIZE]),
-                                      textAlign: 'center',
-                                      paddingStart: WIDTH_OF_SCREEN / 50
-                                  }}
-                                  onPress={() => {
-
-
-                                      if (item.visible) {
-                                          const changes = openLessons;
-                                          changes[item2.index] = !changes[item2.index];
-                                          setOpenLessons([...changes]);
-                                      } else {
-                                          props[SET_STATE]({
-                                              [DEFINITIONS.SNACK_BAR]:
-                                                  {
-                                                      [DEFINITIONS.SHOW_SNACK_BAR]: true,
-                                                      [DEFINITIONS.ACTION_ON_SNACK_BAR]: () => {
-                                                      },
-                                                      [DEFINITIONS.SNACK_BAR_TYPE]: TYPE_OF_SNACK_BAR.WARNING,
-                                                      [DEFINITIONS.TITLE_ON_SNACK_BAR]: 'שים לב!',
-                                                      [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'שיעור זה אינו פתוח לצפייה כרגע.',
-
-                                                  }
-                                          })
-                                      }
-
-                                  }
-                                  }
-                                      style={{
-                                      ...elevationShadowStyle(3),
-                                      borderRadius: WIDTH_OF_SCREEN / 15,
-                                      width: WIDTH_OF_SCREEN / 1.2,
-                                      backgroundColor: isNotUndefined(item.type) ? '#4A65E3' : APP_COLOR.screenBackground,
-                                      margin: '5%',
-                                      height: HEIGHT_OF_SCREEN / 15,
-                                      alignItems: 'center',
-                                      paddingHorizontal: '5%',
-                                      justifyContent: 'space-between'
-                                  }}
-                                      iconType={!isNotUndefined(item.type) ? ICON_TYPES.ARROW_DOWN : undefined}
-                                      text={item.text}/>
-                                      <View key={"" + item2.index}
-                                      style={{width: WIDTH_OF_SCREEN / 1.1, alignItems: 'flex-start',}}>
-                                      {
-                                          openLessons[item2.index] &&
-                                          lessons[item2.index].map((item) => {
-                                              return item
-                                          })
-                                      }
-                                      </View>
-                                      </View>
-                                      }}/>
-
-                                      </View>
+                    return <View style={{alignItems: 'center'}}>
+                        <CustomButton
+                            textStyle={{
+                                flex: 1,
+                                color: !item.visible ? '#acacac' : isNotUndefined(item.type) ? "white" : '#4A65E3',
+                                fontWeight: 'bold',
+                                fontSize: calculateFontSizeByScreen(15 + props[DEFINITIONS.TEXT_SIZE]),
+                                textAlign: 'center',
+                                paddingStart: WIDTH_OF_SCREEN / 50
+                            }}
+                            onPress={() => {
 
 
-                                      </View>
-                                      }
+                                if (item.visible) {
+                                    console.log(item)
+                                    if(item.type=="URL"){
+                                        Linking.openURL(item.url).catch(err => console.error("Couldn't load page", err));
+                                    }else{
+                                        const changes = openLessons;
+                                        changes[item2.index] = !changes[item2.index];
+                                        setOpenLessons([...changes]);
+                                    }
 
-                                      export default connect(mapStateToProps, mapDispatchToProps)(AllCategories)
+                                } else {
+                                    props[SET_STATE]({
+                                        [DEFINITIONS.SNACK_BAR]:
+                                            {
+                                                [DEFINITIONS.SHOW_SNACK_BAR]: true,
+                                                [DEFINITIONS.ACTION_ON_SNACK_BAR]: () => {
+                                                },
+                                                [DEFINITIONS.SNACK_BAR_TYPE]: TYPE_OF_SNACK_BAR.WARNING,
+                                                [DEFINITIONS.TITLE_ON_SNACK_BAR]: 'שים לב!',
+                                                [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'שיעור זה אינו פתוח לצפייה כרגע.',
 
-                                      const style = StyleSheet.create({
-                                      container: {
-                                      backgroundColor: APP_COLOR.main,
-                                      }
-                                      })
+                                            }
+                                    })
+                                }
+
+                            }
+                            }
+                            style={{
+                                ...elevationShadowStyle(3),
+                                borderRadius: WIDTH_OF_SCREEN / 15,
+                                width: WIDTH_OF_SCREEN / 1.2,
+                                backgroundColor: isNotUndefined(item.type) ? '#4A65E3' : APP_COLOR.screenBackground,
+                                margin: '5%',
+                                height: HEIGHT_OF_SCREEN / 15,
+                                alignItems: 'center',
+                                paddingHorizontal: '5%',
+                                justifyContent: 'space-between'
+                            }}
+                            iconType={!isNotUndefined(item.type) ? ICON_TYPES.ARROW_DOWN : undefined}
+                            text={item.text}/>
+                        <View key={"" + item2.index}
+                              style={{width: WIDTH_OF_SCREEN / 1.1, alignItems: 'flex-start',}}>
+                            {
+                                openLessons[item2.index] &&
+                                lessons[item2.index].map((item) => {
+                                    return item
+                                })
+                            }
+                        </View>
+                    </View>
+                }}/>
+
+        </View>
+
+
+    </View>
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllCategories)
+
+const style = StyleSheet.create({
+    container: {
+        backgroundColor: APP_COLOR.main,
+    }
+})
 
 

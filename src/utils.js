@@ -1,4 +1,15 @@
-import {Dimensions, Text, TouchableOpacity, StyleSheet, View, TextInput, Image, ScrollView, Modal} from "react-native";
+import {
+    Dimensions,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    View,
+    TextInput,
+    Image,
+    ScrollView,
+    Modal,
+    ActivityIndicator
+} from "react-native";
 
 import React from "react";
 import PixelRatio from "react-native/Libraries/Utilities/PixelRatio";
@@ -58,6 +69,7 @@ export const TYPE_OF_SNACK_BAR = {
 export const DEFINITIONS = {
     IS_LOG_IN: 'isLogIn',
     TEXT_SIZE: 'textSize',
+    KEYBOARD_HEIGHT:'keyboardHeight',
     TEXT_ON_HEADER: 'textOnHeader',
     SHOW_SNACK_BAR: 'showSnackBar',
     ACTION_ON_SNACK_BAR: 'actionOnSnackBar',
@@ -86,7 +98,8 @@ export const CustomButton = (props) => {
 
     return <Ripple
         rippleDuration={600}
-        rippleCentered={true}
+        rippleCentered={false}
+        disabled={props.disabled}
         rippleColor={APP_COLOR.iconColor}
         onPress={props.onPress}
         style={[{flexDirection: 'row', alignItems: 'center'}, props.style]}
@@ -106,6 +119,10 @@ export const CustomButton = (props) => {
 
 
         </View>
+        {
+            props.showLoader&&
+                <ActivityIndicator style={{position:'absolute'}} color={"black"} size={'100%'} animating={true}/>
+        }
 
 
     </Ripple>
@@ -188,6 +205,9 @@ export const SetIcon = (props) => {
         case ICON_TYPES.CLOSE:
             return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/close-icon-29.png')}/>
+        case ICON_TYPES.DRAWER:
+            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                          source={require('../res/icons/menu.png')}/>
 
         default:
             return <View/>
@@ -221,7 +241,8 @@ export const ICON_TYPES = {
     ARROW_DOWN: 'arrowDown',
     ARROW_UP: 'arrowUp',
     LEFT: 'left',
-    APPLE:'apple'
+    APPLE:'apple',
+    DRAWER:'menu'
 
 
 }
@@ -270,6 +291,7 @@ export const CustomInput = (props) => {
 
         <View style={{marginStart: WIDTH_OF_SCREEN / 80}}/>
         <TextInput
+            multiline={props.multiline}
             autoCapitalize={"none"}
             style={props.textStyle}
             value={props.value}
@@ -289,7 +311,8 @@ CustomInput.props = {
     style: '',
     textStyle: '',
     iconType: '',
-    iconSize: ''
+    iconSize: '',
+    multiline:''
 
 }
 
@@ -300,7 +323,9 @@ CustomButton.props = {
     text: '',
     textStyle: '',
     iconSize: '',
-    children: ''
+    children: '',
+    showLoader:'',
+    disabled:''
 
 }
 const style = StyleSheet.create({

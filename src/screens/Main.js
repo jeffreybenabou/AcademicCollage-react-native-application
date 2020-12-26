@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect,} from "react";
 /*
 *
 * */
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {connect} from "react-redux";
-import {View, StyleSheet, Text, TouchableOpacity, SafeAreaViewComponent, SafeAreaView, Platform} from "react-native";
+import {View, StyleSheet, Text, TouchableOpacity, I18nManager, SafeAreaView, Platform, Keyboard} from "react-native";
 import LoginScreen from "./LoginScreen";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 
@@ -26,19 +26,53 @@ import Drawer from "../navigation/Drawer";
 import * as Animatable from 'react-native-animatable';
 import functions from '@react-native-firebase/functions';
 import {not} from "react-native-reanimated";
+import RNRestart from "react-native-restart";
+import { getAppstoreAppMetadata } from "react-native-appstore-version-checker";
 
 const Main = (props) => {
     useEffect(() => {
-
-
-
-
-
-
-            checkIfUserIsConnected();
-
-
+        setListeners();
+        checkRtl();
+        checkVersion();
+        checkIfUserIsConnected();
     }, [])
+
+    const setListeners=()=>{
+        Keyboard.addListener("keyboardDidShow", (e)=>{
+            props[SET_STATE]({
+                [DEFINITIONS.KEYBOARD_HEIGHT]:e.endCoordinates.height
+            })
+        });
+        Keyboard.addListener("keyboardDidHide", ()=>{
+            props[SET_STATE]({
+                [DEFINITIONS.KEYBOARD_HEIGHT]:0
+            })
+        });
+    }
+
+    const checkVersion=()=>{
+        getAppstoreAppMetadata("com.supercell.clashofclans") //put any apps packageId here
+            .then(metadata => {
+                console.log(
+                    "clashofclans android app version on playstore",
+                    metadata.version,
+                    "published on",
+                    metadata.currentVersionReleaseDate
+                );
+            })
+            .catch(err => {
+                console.log("error occurred", err);
+            });
+
+    }
+    const checkRtl = async () => {
+
+        if (!I18nManager.isRTL) {
+            await I18nManager.forceRTL(true);
+            RNRestart.Restart();
+        }
+
+    }
     const requestPermission = async () => {
 
         const authStatus = await messaging().requestPermission();
@@ -49,21 +83,21 @@ const Main = (props) => {
         if (enabled) {
             messaging()
                 .getToken().then((token) => {
-                console.log("token",token)
+                console.log("token", token)
             })
 
             messaging().onMessage((notification) => {
-                if(Platform.OS=="ios")
-                PushNotification.localNotification({
-                    message:notification.notification.body,
-                    title:notification.notification.title,
-                    /* Android Only Properties */
-                    bigText:notification.notification.title, // (optional) default: "message" prop
+                if (Platform.OS == "ios")
+                    PushNotification.localNotification({
+                        message: notification.notification.body,
+                        title: notification.notification.title,
+                        /* Android Only Properties */
+                        bigText: notification.notification.title, // (optional) default: "message" prop
 
-                });
+                    });
 
 
-                console.log("notification",notification)
+                console.log("notification", notification)
             })
 
 
@@ -77,7 +111,7 @@ const Main = (props) => {
                     channelName: "notifications", // (required)
                     channelDescription: "קבלת נוטיפיקציות בקשר לשיעור", // (optional) default: undefined.
                     soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-                    importance:8, // (optional) default: 4. Int value of the Android notification importance
+                    importance: 4, // (optional) default: 4. Int value of the Android notification importance
                     vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
                 },
                 (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
@@ -90,21 +124,20 @@ const Main = (props) => {
         if (auth().currentUser != null) {
             requestPermission();
 
-            const sourceCode=await getData(DEFINITIONS.COURSE_CODE);
-            let fontSize=parseInt(await getData(DEFINITIONS.TEXT_SIZE))
-            fontSize=isNaN(fontSize)?0:fontSize
-            const user={
-                [DEFINITIONS.USER_NAME]:await getData(DEFINITIONS.USER_NAME),
-                [DEFINITIONS.USER_EMAIL]:await getData(DEFINITIONS.USER_EMAIL),
-                [DEFINITIONS.USER_IMAGE]:await getData(DEFINITIONS.USER_IMAGE),
+            const sourceCode = await getData(DEFINITIONS.COURSE_CODE);
+            let fontSize = parseInt(await getData(DEFINITIONS.TEXT_SIZE))
+            fontSize = isNaN(fontSize) ? 0 : fontSize
+            const user = {
+                [DEFINITIONS.USER_NAME]: await getData(DEFINITIONS.USER_NAME),
+                [DEFINITIONS.USER_EMAIL]: await getData(DEFINITIONS.USER_EMAIL),
+                [DEFINITIONS.USER_IMAGE]: await getData(DEFINITIONS.USER_IMAGE),
             }
             props[SET_STATE]({
-                [DEFINITIONS.TEXT_SIZE]:fontSize,
-                [DEFINITIONS.COURSE_CODE]:sourceCode,
+                [DEFINITIONS.TEXT_SIZE]: fontSize,
+                [DEFINITIONS.COURSE_CODE]: sourceCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
-                [DEFINITIONS.USER]:user
+                [DEFINITIONS.USER]: user
             })
-
 
 
         }
@@ -179,12 +212,12 @@ const Main = (props) => {
                 <View style={{flex: 1}}>
                     <Text style={{
                         textAlign: 'left',
-                        fontSize: calculateFontSizeByScreen(14+props[DEFINITIONS.TEXT_SIZE]),
+                        fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                         color: props[DEFINITIONS.SNACK_BAR][DEFINITIONS.SNACK_BAR_TYPE] === TYPE_OF_SNACK_BAR.ERROR ? 'red' : props[DEFINITIONS.SNACK_BAR][DEFINITIONS.SNACK_BAR_TYPE] === TYPE_OF_SNACK_BAR.WARNING ? 'orange' : 'rgb(40,77,130)',
                     }}>{props[DEFINITIONS.SNACK_BAR][DEFINITIONS.TITLE_ON_SNACK_BAR]}</Text>
                     <Text style={{
                         textAlign: 'left',
-                        fontSize: calculateFontSizeByScreen(14+props[DEFINITIONS.TEXT_SIZE]),
+                        fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                         color: 'black',
                     }}>{props[DEFINITIONS.SNACK_BAR][DEFINITIONS.TEXT_ON_SNACK_BAR]}</Text>
                 </View>
@@ -218,12 +251,13 @@ const Main = (props) => {
         </Animatable.View>;
 
     };
-    return <View style={style.container}>
+    return <SafeAreaView style={style.container}>
 
         {
-            !props[DEFINITIONS.IS_LOG_IN] &&
-            <View style={{backgroundColor: APP_COLOR.main,flex: 1}}>
 
+            !props[DEFINITIONS.IS_LOG_IN]&&
+            <View style={{height:HEIGHT_OF_SCREEN/15,alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontSize:calculateFontSizeByScreen(16 + props[DEFINITIONS.TEXT_SIZE]),textAlign:"center",color:'white'}}>התחברות</Text>
             </View>
         }
 
@@ -249,17 +283,17 @@ const Main = (props) => {
             <SnackBar props={props}/>
         }
         {
-            props[DEFINITIONS.POPUP][DEFINITIONS.POPUP_VISIBLE]&&
-                <Popup  children={props[DEFINITIONS.POPUP][DEFINITIONS.POPUP_CHILDREN]}  />
+            props[DEFINITIONS.POPUP][DEFINITIONS.POPUP_VISIBLE] &&
+            <Popup children={props[DEFINITIONS.POPUP][DEFINITIONS.POPUP_CHILDREN]}/>
         }
 
 
-    </View>
+    </SafeAreaView>
 }
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: APP_COLOR.main
+        backgroundColor:APP_COLOR.main
     }
 })
 

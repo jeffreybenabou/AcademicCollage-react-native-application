@@ -45,19 +45,21 @@ class QA extends React.Component {
         images: [],
         showImageModal: false,
         currentImageOnModal: '',
+        messageIsSending:false
 
     }
 
     flatListRef = {};
 
-    ComponentDidMount() {
+
+    componentDidMount() {
+
         firestore()
             .collection(this.props[DEFINITIONS.COURSE_CODE])
             .doc("courseMessages")
             .onSnapshot(
                 (object) => {
                     const courseMessages = [];
-
 
                     try {
                         Object.keys(object.data()).sort().map((item2) => {
@@ -68,6 +70,7 @@ class QA extends React.Component {
                     }
 
 
+
                     this.setState({
                         courseMessages
                     })
@@ -75,6 +78,7 @@ class QA extends React.Component {
 
                 },
                 () => {
+
 
                 });
         firestore()
@@ -94,6 +98,7 @@ class QA extends React.Component {
                     this.setState({
                         generalMessages
                     })
+
 
 
                 },
@@ -121,11 +126,11 @@ class QA extends React.Component {
         </View>
     }
 
-    flatListItem = (props) => {
-        return <View style={{marginBottom: '2.5%', backgroundColor: APP_COLOR.QABackground}}>
+    FlatListItem = (props) => (
+        <View style={{marginBottom: '2.5%', backgroundColor: APP_COLOR.QABackground}}>
             <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                <Image
-                    source={{url: props.item.img}}
+                <FastImage
+                    source={{uri: props.item.img}}
                     style={{
                         margin: '5%',
                         height: WIDTH_OF_SCREEN / 6,
@@ -164,13 +169,15 @@ class QA extends React.Component {
                 }}>{props.item.text}</Text>
             <Carousel loop={true}
                       data={props.item.images}
-                      renderItem={CarouselItem}
+                      renderItem={this.CarouselItem}
                       sliderWidth={WIDTH_OF_SCREEN}
                       itemWidth={WIDTH_OF_SCREEN / 1.2}
             />
 
         </View>
-    }
+    )
+
+
     sendNotification = async (title, body, imagePath) => {
 
         const data = {
@@ -249,6 +256,7 @@ class QA extends React.Component {
             </View>
             <View style={{marginVertical: '5%', justifyContent: 'space-between', flexDirection: 'row',}}>
                 <CustomInput
+                    multiline={true}
                     actionOnIconPress={() => {
 
                         if (Platform.OS == "android" ? requestPermission(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE) : requestPermission(PERMISSIONS.IOS.PHOTO_LIBRARY)) {
@@ -268,7 +276,6 @@ class QA extends React.Component {
                                     images: imagesPath
                                 })
 
-                                setImages(imagesPath)
 
 
                             });
@@ -301,6 +308,8 @@ class QA extends React.Component {
                         marginStart: '5%'
                     }}/>
                 <CustomButton
+                    disabled={this.state.messageIsSending}
+                    showLoader={this.state.messageIsSending}
                     iconSize={WIDTH_OF_SCREEN / 100}
                     style={{
                         alignItems: 'center',
@@ -312,7 +321,11 @@ class QA extends React.Component {
                         borderRadius: HEIGHT_OF_SCREEN / 15 / 2
                     }}
                     onPress={() => {
+                        console.log("ASfasfasfsafasfsaffasasfafssfa")
                         if (this.state.messageValue.length > 0) {
+                            this.setState({
+                                messageIsSending:true
+                            })
                             const date = new Date();
                             const objectToAdd = {
                                 [date.getTime()]: {
@@ -357,7 +370,12 @@ class QA extends React.Component {
                             firestore()
                                 .collection(this.props[DEFINITIONS.COURSE_CODE])
                                 .doc(this.state.currentPickChat === 0 ? "courseMessages" : 'generalMessages')
-                                .update(objectToAdd)
+                                .update(objectToAdd).then(()=>{
+                                this.setState({
+                                    messageIsSending:false,
+                                    messageValue:''
+                                })
+                            });
                         } else {
                             this.props[SET_STATE]({
                                 [DEFINITIONS.SNACK_BAR]:
@@ -367,7 +385,7 @@ class QA extends React.Component {
                                         },
                                         [DEFINITIONS.SNACK_BAR_TYPE]: TYPE_OF_SNACK_BAR.WARNING,
                                         [DEFINITIONS.TITLE_ON_SNACK_BAR]: 'שים לב!',
-                                        [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'לפני שליחת הודעה חובה להזין מלל',
+                                        [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'לפני שליחת הודעה חובה להזין טקסט',
 
                                     }
                             })
@@ -385,11 +403,12 @@ class QA extends React.Component {
 
 
         return <FlatList
+            style={{width:'100%'}}
             ref={(ref)=>this.flatListRef=ref}
             keyExtractor={this.keyExtractor}
-            data={this.currentPickChat === 0 ? this.courseMessages : this.generalMessages}
+            data={this.state.currentPickChat === 0 ? this.state.courseMessages : this.state.generalMessages}
             ListEmptyComponent={this.FlatListEmpty}
-            renderItem={this.flatListItem}
+            renderItem={this.FlatListItem}
         />
 
     }
@@ -411,9 +430,7 @@ class QA extends React.Component {
     }
 
 
-    CarouselItem = (props) => {
-
-        return <TouchableOpacity
+    CarouselItem = (props) => ( <TouchableOpacity
             onPress={() => {
                 this.setState({
                     currentImageOnModal: props.item,
@@ -426,7 +443,7 @@ class QA extends React.Component {
                     animationType="slide"
                     animated={true}
                     presentationStyle={"fullScreen"}
-                    visible={this.showImageModal}
+                    visible={this.state.showImageModal}
                 >
                     <SafeAreaView>
                         <TouchableOpacity onPress={() => {
@@ -480,13 +497,13 @@ class QA extends React.Component {
                 </Modal>
             }
 
-            <Image
+            <FastImage
                 resizeMode={"contain"}
-                style={{width: '100%', height: HEIGHT_OF_SCREEN / 3.5}}
+                style={{height:HEIGHT_OF_SCREEN/2,width:'100%'}}
                 source={{uri: props.item}}
             />
-        </TouchableOpacity>
-    }
+        </TouchableOpacity>)
+
 }
 
 

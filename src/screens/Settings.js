@@ -16,8 +16,6 @@ import {SET_STATE} from "../redux/types";
 
 const Settings = (mainProps) => {
     const [valueOnSlider, setValueOnSlider] = useState(mainProps[DEFINITIONS.TEXT_SIZE]);
-    const [pushLessons, setPushLessons] = useState(false);
-    const [generalLessons, setGeneralLessons] = useState(false);
 
     return <View style={style.container}>
         <View style={{

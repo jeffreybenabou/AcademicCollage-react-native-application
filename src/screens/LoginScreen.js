@@ -24,7 +24,6 @@ import appleAuth from "@invertase/react-native-apple-authentication";
 const LoginScreen = (props) => {
 
     const [courseCode, setCourseCode] = useState("");
-    const [firstInit, setFirstInit] = useState(true);
     const [user,setUser]=useState(null);
     const [currentLoginMethod, setCurrentLoginMethod] = useState(null);
 
@@ -32,17 +31,17 @@ const LoginScreen = (props) => {
         onAuthStateChanged();
     },[user])
     useEffect(() => {
-        if(firstInit){
-            setFirstInit(false);
+
             GoogleSignin.configure({
                 webClientId: '639569907370-5l0lt7r9isk0q72r3krf73la975sd0h8.apps.googleusercontent.com', // From Firebase Console Settings
             });
 
 
-        }
 
 
-    }, [firstInit])
+
+
+    }, [])
 
 
 
@@ -197,9 +196,15 @@ const LoginScreen = (props) => {
     }
 
     return <View style={style.container}>
-        <View style={{flex: 1}}>
-            <Image style={style.logo} resizeMode={'contain'} source={require('../../res/images/logo.png')}/>
-        </View>
+
+        {
+            props[DEFINITIONS.KEYBOARD_HEIGHT]==0&&
+            <View style={{flex: 1}}>
+                <Image style={style.logo} resizeMode={'contain'} source={require('../../res/images/logo.png')}/>
+            </View>
+        }
+
+
         <View style={{flex: 1.5, marginTop: '5%'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start'}}>
 
