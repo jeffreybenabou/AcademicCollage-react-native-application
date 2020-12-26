@@ -118,7 +118,7 @@ const AllCategories = (props) => {
                                                             position: 'absolute',
                                                             margin: '2%'
                                                         }}
-                                                        iconSize={WIDTH_OF_SCREEN/50}
+                                                        iconSize={WIDTH_OF_SCREEN / 50}
                                                         iconType={ICON_TYPES.CLOSE}
                                                         onPress={() => {
                                                             props[SET_STATE]({
@@ -129,18 +129,18 @@ const AllCategories = (props) => {
                                                             })
                                                         }}/>
                                                     <ImageZoom
-                                                        cropHeight={HEIGHT_OF_SCREEN }
+                                                        cropHeight={HEIGHT_OF_SCREEN}
                                                         cropWidth={WIDTH_OF_SCREEN}
                                                         imageWidth={WIDTH_OF_SCREEN}
                                                         imageHeight={HEIGHT_OF_SCREEN / 3}>
 
-                                                    <FastImage resizeMode={"contain"} style={{
-                                                        flex: 1,
-                                                        width: WIDTH_OF_SCREEN,
-                                                        height: '100%',
-                                                        alignSelf: 'center'
-                                                    }}
-                                                               source={{uri: item[item2].toString().replace("!image!", "")}}/>
+                                                        <FastImage resizeMode={"contain"} style={{
+                                                            flex: 1,
+                                                            width: WIDTH_OF_SCREEN,
+                                                            height: '100%',
+                                                            alignSelf: 'center'
+                                                        }}
+                                                                   source={{uri: item[item2].toString().replace("!image!", "")}}/>
 
                                                     </ImageZoom>
                                                 </SafeAreaView>
@@ -150,34 +150,33 @@ const AllCategories = (props) => {
                                         }
                                     })
                                 }}
-                    children={
-                        <View style={{}}>
-                            <View style={{
-                                borderRadius: WIDTH_OF_SCREEN / 50,
-                                margin: '1%',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                zIndex: 100,
-                                backgroundColor: 'rgba(256,256,256,0.8)',
-                                position: 'absolute'
-                            }}>
-                                <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.FULL_SCREEN}/>
-                            </View>
-                            <Image resizeMode={"contain"} style={{
-                                backgroundColor:'white',
-                                width:WIDTH_OF_SCREEN / 1.2,
-                                alignItems:'center',
-                                justifyContent:'center',
-                                height: HEIGHT_OF_SCREEN / 3
-                            }}
-                                   source={{uri: item[item2].toString().replace("!image!", "")}}/>
+                                children={
+                                    <View style={{height: HEIGHT_OF_SCREEN / 3}}>
+                                        <View style={{
+                                            borderRadius: WIDTH_OF_SCREEN / 50,
+                                            margin: '1%',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            zIndex: 100,
+                                            backgroundColor: 'rgba(256,256,256,0.8)',
+                                            position: 'absolute'
+                                        }}>
+                                            <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.FULL_SCREEN}/>
+                                        </View>
+                                        <Image resizeMode={"contain"} style={{
+                                            backgroundColor: 'white',
+                                            width: WIDTH_OF_SCREEN / 1.2,
+                                            height:'100%  '
 
-                        </View>
-                    }
+                                        }}
+                                               source={{uri: item[item2].toString().replace("!image!", "")}}/>
+
+                                    </View>
+                                }
 
 
-                    />
-                    )
+                            />
+                        )
                     } else {
                         objectToRender.push(<Text
                             style={{
@@ -333,7 +332,7 @@ const AllCategories = (props) => {
                             iconType={!isNotUndefined(item.type) ? ICON_TYPES.ARROW_DOWN : undefined}
                             text={item.text}/>
                         <View key={"" + item2.index}
-                              style={{width: WIDTH_OF_SCREEN / 1.1, alignItems: 'flex-start',}}>
+                              style={{width: WIDTH_OF_SCREEN / 1.2, alignItems: 'flex-start',}}>
                             {
                                 openLessons[item2.index] &&
                                 lessons[item2.index].map((item) => {
@@ -354,7 +353,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AllCategories)
 
 const style = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: APP_COLOR.main,
     }
 })
