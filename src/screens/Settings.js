@@ -15,6 +15,7 @@ import {
 import {SET_STATE} from "../redux/types";
 
 const Settings = (mainProps) => {
+
     const [valueOnSlider, setValueOnSlider] = useState(mainProps[DEFINITIONS.TEXT_SIZE]);
 
     return <View style={style.container}>
@@ -62,7 +63,7 @@ const Settings = (mainProps) => {
                     minimumValue={0}
                     maximumValue={10}
                     minimumTrackTintColor={APP_COLOR.main}
-                    maximumTrackTintColor={APP_COLOR.screenBackground}
+                    maximumTrackTintColor={APP_COLOR.screenBackground} thumbTintColor={APP_COLOR.main}
                 />
 
             </View>

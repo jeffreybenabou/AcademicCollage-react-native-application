@@ -499,7 +499,7 @@ class QA extends React.Component {
 
             <FastImage
                 resizeMode={"contain"}
-                style={{height:HEIGHT_OF_SCREEN/2,width:'100%'}}
+                style={{height:HEIGHT_OF_SCREEN/3,width:'100%'}}
                 source={{uri: props.item}}
             />
         </TouchableOpacity>)

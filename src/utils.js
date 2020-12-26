@@ -208,6 +208,9 @@ export const SetIcon = (props) => {
         case ICON_TYPES.DRAWER:
             return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/menu.png')}/>
+        case ICON_TYPES.FULL_SCREEN:
+            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                          source={require('../res/icons/full-screen.png')}/>
 
         default:
             return <View/>
@@ -228,6 +231,7 @@ SetIcon.props = {
 export const ICON_TYPES = {
     FACEBOOK: 'facebook',
     COPY: 'copy',
+    FULL_SCREEN:'fullScreen',
     GMAIL: 'gmail',
     CLOSE:'close',
     USER_NAME: 'userName',

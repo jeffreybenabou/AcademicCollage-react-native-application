@@ -75,7 +75,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             }}
             text={itemProps.item.titleOfWork}
             textStyle={{
-                height:'100%',
+
                 textAlign: 'center',
                 color: 'white',
 
@@ -88,10 +88,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                 borderRadius: HEIGHT_OF_SCREEN / 50,
                 marginEnd: WIDTH_OF_SCREEN / 30,
 
-                alignSelf: 'flex-start',
-
                 padding: WIDTH_OF_SCREEN / 30,
-                justifyContent: 'center',
                 backgroundColor: APP_COLOR.main,
             }}
 
@@ -128,8 +125,9 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
 
                 }}
                 placeholder={"חפש תרגיל"}/>
-            <View style={{flex: 1}}>
-                <FlatList
+            <View style={{flex: 1,alignItems:'flex-start'}}>
+                <FlatList inverted={true}
+
                     style={{marginHorizontal: '5%'}}
                     horizontal={true}
                     data={filteredData}

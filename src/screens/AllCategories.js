@@ -31,6 +31,7 @@ import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import ImageZoom from 'react-native-image-pan-zoom';
 import functions from "@react-native-firebase/functions";
 import messaging from '@react-native-firebase/messaging'
+import FastImage from "react-native-fast-image";
 
 const AllCategories = (props) => {
     const [lessons, setLessons] = useState([])
@@ -115,10 +116,10 @@ const AllCategories = (props) => {
                                                             justifyContent: 'center',
                                                             zIndex: 100,
                                                             position: 'absolute',
-                                                            margin: '5%'
+                                                            margin: '2%'
                                                         }}
-                                                        iconSize={0}
-                                                        iconType={ICON_TYPES.ARROW_DOWN}
+                                                        iconSize={WIDTH_OF_SCREEN/50}
+                                                        iconType={ICON_TYPES.CLOSE}
                                                         onPress={() => {
                                                             props[SET_STATE]({
                                                                 [DEFINITIONS.POPUP]: {
@@ -127,28 +128,21 @@ const AllCategories = (props) => {
 
                                                             })
                                                         }}/>
+                                                    <ImageZoom
+                                                        cropHeight={HEIGHT_OF_SCREEN }
+                                                        cropWidth={WIDTH_OF_SCREEN}
+                                                        imageWidth={WIDTH_OF_SCREEN}
+                                                        imageHeight={HEIGHT_OF_SCREEN / 3}>
 
-                                                    <ReactNativeZoomableView
-                                                        maxZoom={2.5}
-                                                        minZoom={0.5}
-                                                        zoomStep={0.5}
-                                                        initialZoom={1}
-                                                        style={{
-                                                            flex: 1,
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                            alignSelf: 'center',
-                                                        }}
-                                                    >
-                                                        <Image resizeMode={"contain"} style={{
-                                                            flex: 1,
-                                                            width: WIDTH_OF_SCREEN,
-                                                            height: '100%',
-                                                            alignSelf: 'center'
-                                                        }}
+                                                    <FastImage resizeMode={"contain"} style={{
+                                                        flex: 1,
+                                                        width: WIDTH_OF_SCREEN,
+                                                        height: '100%',
+                                                        alignSelf: 'center'
+                                                    }}
                                                                source={{uri: item[item2].toString().replace("!image!", "")}}/>
 
-                                                    </ReactNativeZoomableView>
+                                                    </ImageZoom>
                                                 </SafeAreaView>
 
                                             ,
@@ -156,31 +150,34 @@ const AllCategories = (props) => {
                                         }
                                     })
                                 }}
-                                children={
-                                    <View>
-                                        <View style={{
-                                            borderRadius: WIDTH_OF_SCREEN / 50,
-                                            margin: '1%',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            zIndex: 100,
-                                            backgroundColor: 'rgba(0,0,0,0.8)',
-                                            position: 'absolute'
-                                        }}>
-                                            <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.COPY}/>
-                                        </View>
-                                        <Image resizeMode={"stretch"} style={{
-                                            width: WIDTH_OF_SCREEN,
-                                            height: HEIGHT_OF_SCREEN / 3
-                                        }}
-                                               source={{uri: item[item2].toString().replace("!image!", "")}}/>
+                    children={
+                        <View style={{}}>
+                            <View style={{
+                                borderRadius: WIDTH_OF_SCREEN / 50,
+                                margin: '1%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 100,
+                                backgroundColor: 'rgba(256,256,256,0.8)',
+                                position: 'absolute'
+                            }}>
+                                <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.FULL_SCREEN}/>
+                            </View>
+                            <Image resizeMode={"contain"} style={{
+                                backgroundColor:'white',
+                                width:WIDTH_OF_SCREEN / 1.2,
+                                alignItems:'center',
+                                justifyContent:'center',
+                                height: HEIGHT_OF_SCREEN / 3
+                            }}
+                                   source={require('../../res/images/download.jpeg')}/>
 
-                                    </View>
-                                }
+                        </View>
+                    }
 
 
-                            />
-                        )
+                    />
+                    )
                     } else {
                         objectToRender.push(<Text
                             style={{
@@ -290,16 +287,16 @@ const AllCategories = (props) => {
                                 fontWeight: 'bold',
                                 fontSize: calculateFontSizeByScreen(15 + props[DEFINITIONS.TEXT_SIZE]),
                                 textAlign: 'center',
-                                paddingStart: WIDTH_OF_SCREEN / 50
+
                             }}
                             onPress={() => {
 
 
                                 if (item.visible) {
                                     console.log(item)
-                                    if(item.type=="URL"){
+                                    if (item.type == "URL") {
                                         Linking.openURL(item.url).catch(err => console.error("Couldn't load page", err));
-                                    }else{
+                                    } else {
                                         const changes = openLessons;
                                         changes[item2.index] = !changes[item2.index];
                                         setOpenLessons([...changes]);
@@ -357,6 +354,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AllCategories)
 
 const style = StyleSheet.create({
     container: {
+        flex:1,
         backgroundColor: APP_COLOR.main,
     }
 })
