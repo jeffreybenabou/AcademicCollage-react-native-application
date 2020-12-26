@@ -82,6 +82,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                 fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
             }}
 
+
             style={{
                 borderRadius: HEIGHT_OF_SCREEN / 50,
                 marginEnd: WIDTH_OF_SCREEN / 30,
