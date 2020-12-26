@@ -170,7 +170,7 @@ const AllCategories = (props) => {
                                 justifyContent:'center',
                                 height: HEIGHT_OF_SCREEN / 3
                             }}
-                                   source={require('../../res/images/download.jpeg')}/>
+                                   source={{uri: item[item2].toString().replace("!image!", "")}}/>
 
                         </View>
                     }
