@@ -45,6 +45,7 @@ const AllCategories = (props) => {
         const openLessons2 = [];
 
         item.map((item) => {
+
             let objectToRender = [];
             Object.keys(item).sort((a, b) => a > b ? 1 : -1).map((item2) => {
 
@@ -163,10 +164,10 @@ const AllCategories = (props) => {
                                         }}>
                                             <SetIcon iconSize={WIDTH_OF_SCREEN / 50} iconType={ICON_TYPES.FULL_SCREEN}/>
                                         </View>
-                                        <Image resizeMode={"contain"} style={{
+                                        <FastImage resizeMode={"contain"} style={{
                                             backgroundColor: 'white',
                                             width: WIDTH_OF_SCREEN / 1.2,
-                                            height:'100%  '
+                                            height:'100%'
 
                                         }}
                                                source={{uri: item[item2].toString().replace("!image!", "")}}/>
@@ -292,7 +293,6 @@ const AllCategories = (props) => {
 
 
                                 if (item.visible) {
-                                    console.log(item)
                                     if (item.type == "URL") {
                                         Linking.openURL(item.url).catch(err => console.error("Couldn't load page", err));
                                     } else {
