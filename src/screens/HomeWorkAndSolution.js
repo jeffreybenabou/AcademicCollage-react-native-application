@@ -83,6 +83,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             }}
 
 
+
             style={{
                 borderRadius: HEIGHT_OF_SCREEN / 50,
                 marginEnd: WIDTH_OF_SCREEN / 30,
