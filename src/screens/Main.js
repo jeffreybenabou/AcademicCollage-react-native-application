@@ -55,7 +55,6 @@ const Main = (props) => {
         setListeners();
         checkRtl();
         checkVersion();
-        requestPermission();
         checkIfUserIsConnected();
         checkIfUnderMaintainOrNeedUpdate();
     }, [])
@@ -139,12 +138,14 @@ const Main = (props) => {
             })
 
             messaging().onMessage((notification) => {
-                if (Platform.OS == "ios")
+
+
+                if(Platform.OS==="ios")
                     PushNotification.localNotification({
                         message: notification.notification.body,
                         title: notification.notification.title,
                         /* Android Only Properties */
-                        bigText: notification.notification.title, // (optional) default: "message" prop
+                        bigText: notification.notification.body, // (optional) default: "message" prop
 
                     });
 
@@ -155,7 +156,7 @@ const Main = (props) => {
 
             console.log("props[DEFINITIONS.COURSE_CODE]",courseCode)
             messaging()
-                .subscribeToTopic("test")
+                .subscribeToTopic(""+courseCode)
                 .then(() => console.log('Subscribed to topic!'));
 
             PushNotification.createChannel(
