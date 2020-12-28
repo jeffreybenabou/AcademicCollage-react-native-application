@@ -55,7 +55,7 @@ const LoginScreen = (props) => {
             await  storeData([DEFINITIONS.USER_NAME],user.name)
             await  storeData([DEFINITIONS.USER_EMAIL],user.email)
             await storeData([DEFINITIONS.USER_IMAGE],user.picture)
-            props[SET_STATE]({
+          await  props[SET_STATE]({
                 [DEFINITIONS.COURSE_CODE]:courseCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
                 [DEFINITIONS.USER]:
@@ -65,6 +65,7 @@ const LoginScreen = (props) => {
                         [DEFINITIONS.USER_IMAGE]:user.picture
                     }
             })
+                props.checkIfUserIsConnected();
 
             }).catch(()=>{
 

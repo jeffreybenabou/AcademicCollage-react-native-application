@@ -181,7 +181,7 @@ class QA extends React.Component {
     sendNotification = async (title, body, imagePath) => {
 
         const data = {
-            topic: 'test',
+            topic: this.props[DEFINITIONS.COURSE_CODE],
             title: title,
             body: body,
             image: imagePath

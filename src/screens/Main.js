@@ -55,6 +55,7 @@ const Main = (props) => {
         setListeners();
         checkRtl();
         checkVersion();
+        requestPermission();
         checkIfUserIsConnected();
         checkIfUnderMaintainOrNeedUpdate();
     }, [])
@@ -148,12 +149,13 @@ const Main = (props) => {
                     });
 
 
-                console.log("notification", notification)
+                console.log("my notification", notification)
             })
+            const courseCode = await getData(DEFINITIONS.COURSE_CODE);
 
-
+            console.log("props[DEFINITIONS.COURSE_CODE]",courseCode)
             messaging()
-                .subscribeToTopic('test')
+                .subscribeToTopic("test")
                 .then(() => console.log('Subscribed to topic!'));
 
             PushNotification.createChannel(
@@ -173,9 +175,10 @@ const Main = (props) => {
     }
     const checkIfUserIsConnected = async () => {
         if (auth().currentUser != null) {
-            requestPermission();
+
             setAdMob();
-            const sourceCode = await getData(DEFINITIONS.COURSE_CODE);
+            const courseCode = await getData(DEFINITIONS.COURSE_CODE);
+
             let fontSize = parseInt(await getData(DEFINITIONS.TEXT_SIZE))
             fontSize = isNaN(fontSize) ? 0 : fontSize
             const user = {
@@ -183,15 +186,14 @@ const Main = (props) => {
                 [DEFINITIONS.USER_EMAIL]: await getData(DEFINITIONS.USER_EMAIL),
                 [DEFINITIONS.USER_IMAGE]: await getData(DEFINITIONS.USER_IMAGE),
             }
-            props[SET_STATE]({
+         await   props[SET_STATE]({
                 [DEFINITIONS.TEXT_SIZE]: fontSize,
-                [DEFINITIONS.COURSE_CODE]: sourceCode,
+                [DEFINITIONS.COURSE_CODE]: courseCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
                 [DEFINITIONS.USER]: user,
                 [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
             })
-
-
+            requestPermission();
         } else
             props[SET_STATE]({
                 [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
@@ -380,7 +382,7 @@ const Main = (props) => {
                             props[DEFINITIONS.IS_LOG_IN] ?
                                 <Drawer props={props}/>
                                 :
-                                <LoginScreen/>
+                                <LoginScreen checkIfUserIsConnected={checkIfUserIsConnected}/>
             }
 
 
