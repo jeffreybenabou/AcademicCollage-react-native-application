@@ -4,10 +4,19 @@ import React, {useEffect,} from "react";
 * */
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {connect} from "react-redux";
-import {View, StyleSheet, Text, TouchableOpacity, I18nManager, SafeAreaView, Platform, Keyboard} from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    I18nManager,
+    SafeAreaView,
+    Platform,
+    Keyboard,
+    Linking
+} from "react-native";
 import LoginScreen from "./LoginScreen";
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-
+import firestore from '@react-native-firebase/firestore'
 import LottieView from 'lottie-react-native';
 import {
     TYPE_OF_SNACK_BAR,
@@ -16,7 +25,7 @@ import {
     DEFINITIONS,
     HEIGHT_OF_SCREEN,
     languageRestart,
-    WIDTH_OF_SCREEN, isNotUndefined, getData, Popup, SplashScreen
+    WIDTH_OF_SCREEN, isNotUndefined, getData, Popup, SplashScreen, AppUnderMaintain, CustomButton
 } from "../utils";
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
@@ -24,38 +33,75 @@ import auth from '@react-native-firebase/auth';
 import {SET_STATE} from "../redux/types";
 import Drawer from "../navigation/Drawer";
 import * as Animatable from 'react-native-animatable';
-import functions from '@react-native-firebase/functions';
-import {not} from "react-native-reanimated";
 import RNRestart from "react-native-restart";
-import { getAppstoreAppMetadata } from "react-native-appstore-version-checker";
+import {getAppstoreAppMetadata} from "react-native-appstore-version-checker";
+import {InterstitialAd, AdEventType} from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-1901519090884740/6955333195';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: false,
+    keywords: ['jewish', 'tech', "learning", "java", "android", "ios", "react-native", "applications", "web", "react"],
+});
+
+import {BannerAd, BannerAdSize, TestIds} from '@react-native-firebase/admob';
+
+const adUnitIdBanner = __DEV__ ? TestIds.BANNER : 'ca-app-pub-1901519090884740/9665641456';
 
 const Main = (props) => {
     useEffect(() => {
+
 
         setListeners();
         checkRtl();
         checkVersion();
         checkIfUserIsConnected();
-        checkIfUnderMaintain();
+        checkIfUnderMaintainOrNeedUpdate();
     }, [])
 
-    const checkIfUnderMaintain=()=>{
+    const setAdMob = () => {
+        interstitial.onAdEvent(type => {
+            if (type === AdEventType.OPENED) {
 
-    }
-    const setListeners=()=>{
-        Keyboard.addListener("keyboardDidShow", (e)=>{
-            props[SET_STATE]({
-                [DEFINITIONS.KEYBOARD_HEIGHT]:e.endCoordinates.height
-            })
+            } else if (type === AdEventType.LOADED) {
+                interstitial.show()
+            }
         });
-        Keyboard.addListener("keyboardDidHide", ()=>{
-            props[SET_STATE]({
-                [DEFINITIONS.KEYBOARD_HEIGHT]:0
-            })
-        });
+        interstitial.load();
     }
 
-    const checkVersion=()=>{
+    const checkIfUnderMaintainOrNeedUpdate = () => {
+        firestore().collection("settings").get().then((maintain) => {
+            let needUpdate = false, isUnderMaintain = false;
+            maintain.docs.map((item, index) => {
+                if (index == 0) {
+                    isUnderMaintain = item.data().isUnderMaintain
+                } else if (index === 1) {
+                    needUpdate = Platform.OS == "android" ? item.data().android > 100 : item.data().ios > 100
+                }
+            })
+
+            props[SET_STATE]({
+                [DEFINITIONS.NEED_UPDATE]: needUpdate,
+                [DEFINITIONS.APP_UNDER_MAINTAIN]: isUnderMaintain
+            })
+
+        })
+    }
+    const setListeners = () => {
+        Keyboard.addListener("keyboardDidShow", (e) => {
+            props[SET_STATE]({
+                [DEFINITIONS.KEYBOARD_HEIGHT]: e.endCoordinates.height
+            })
+        });
+        Keyboard.addListener("keyboardDidHide", () => {
+            props[SET_STATE]({
+                [DEFINITIONS.KEYBOARD_HEIGHT]: 0
+            })
+        });
+    }
+
+    const checkVersion = () => {
         getAppstoreAppMetadata("com.supercell.clashofclans") //put any apps packageId here
             .then(metadata => {
                 console.log(
@@ -128,7 +174,7 @@ const Main = (props) => {
     const checkIfUserIsConnected = async () => {
         if (auth().currentUser != null) {
             requestPermission();
-
+            setAdMob();
             const sourceCode = await getData(DEFINITIONS.COURSE_CODE);
             let fontSize = parseInt(await getData(DEFINITIONS.TEXT_SIZE))
             fontSize = isNaN(fontSize) ? 0 : fontSize
@@ -142,14 +188,14 @@ const Main = (props) => {
                 [DEFINITIONS.COURSE_CODE]: sourceCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
                 [DEFINITIONS.USER]: user,
-                [DEFINITIONS.SHOW_SPLASH_SCREEN]:false
+                [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
             })
 
 
-        }else
-        props[SET_STATE]({
-            [DEFINITIONS.SHOW_SPLASH_SCREEN]:false
-        })
+        } else
+            props[SET_STATE]({
+                [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
+            })
 
     }
     const SnackBar = (props2) => {
@@ -260,13 +306,59 @@ const Main = (props) => {
         </Animatable.View>;
 
     };
+    const ShowUpdateScreen = () => {
+        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{color:'black',fontSize:calculateFontSizeByScreen(20),fontWeight:'bold'}}>עדכון גרסה</Text>
+
+            <Text style={{color:'black',fontSize:calculateFontSizeByScreen(16)}}>לחץ על הכפתור מטה על מנת לעדכן את האפליקציה</Text>
+            <LottieView
+                autoPlay={true}
+                duration={7000}
+                loop={true}
+                resizeMode={'contain'}
+                style={{
+                    height:HEIGHT_OF_SCREEN/2,
+                    marginBottom:HEIGHT_OF_SCREEN/50
+
+                }}
+                source={  require('../../res/animation/update.json')}
+            />
+            <CustomButton
+                onPress={() => {
+                    try {
+                        if (Platform.OS === 'android') {
+                            Linking.openURL( 'market://details?id=com.jeffrey.academiccollage' );
+                        } else {
+                            Linking.openURL( 'https://itunes.apple.com/us/app/expo-client/id1486600202?mt=8');
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }}
+                textStyle={{
+                    color:'white',
+                    fontSize:calculateFontSizeByScreen(14)
+                }}
+                style={{
+                    borderRadius: WIDTH_OF_SCREEN / 50,
+                    paddingHorizontal: '5%',
+                    backgroundColor: APP_COLOR.main,
+                    height: HEIGHT_OF_SCREEN / 15
+                }}
+                text={"לחץ כאן לעדכון האפליקציה"}/>
+        </View>
+    }
     return <SafeAreaView style={style.container}>
 
         {
 
-            !props[DEFINITIONS.IS_LOG_IN]&&
-            <View style={{height:HEIGHT_OF_SCREEN/15,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:calculateFontSizeByScreen(16 + props[DEFINITIONS.TEXT_SIZE]),textAlign:"center",color:'white'}}>התחברות</Text>
+            !props[DEFINITIONS.IS_LOG_IN] &&
+            <View style={{height: HEIGHT_OF_SCREEN / 15, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{
+                    fontSize: calculateFontSizeByScreen(16 + props[DEFINITIONS.TEXT_SIZE]),
+                    textAlign: "center",
+                    color: 'white'
+                }}>התחברות</Text>
             </View>
         }
 
@@ -279,12 +371,16 @@ const Main = (props) => {
         }}>
 
             {
-                props[DEFINITIONS.SHOW_SPLASH_SCREEN]?
-                    <SplashScreen/>:
-                props[DEFINITIONS.IS_LOG_IN] ?
-                    <Drawer props={props}/>
-                    :
-                    <LoginScreen/>
+                props[DEFINITIONS.NEED_UPDATE] ?
+                    <ShowUpdateScreen/> :
+                    props[DEFINITIONS.APP_UNDER_MAINTAIN] ?
+                        <AppUnderMaintain/> :
+                        props[DEFINITIONS.SHOW_SPLASH_SCREEN] ?
+                            <SplashScreen/> :
+                            props[DEFINITIONS.IS_LOG_IN] ?
+                                <Drawer props={props}/>
+                                :
+                                <LoginScreen/>
             }
 
 
@@ -298,13 +394,26 @@ const Main = (props) => {
             <Popup children={props[DEFINITIONS.POPUP][DEFINITIONS.POPUP_CHILDREN]}/>
         }
 
+        {
+            props[DEFINITIONS.IS_LOG_IN] &&
+            <View style={{alignItems: 'center', backgroundColor: APP_COLOR.screenBackground}}>
+                <BannerAd
+                    unitId={adUnitIdBanner}
+                    size={BannerAdSize.ADAPTIVE_BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: false,
+                    }}
+                />
+            </View>
+        }
+
 
     </SafeAreaView>
 }
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:APP_COLOR.main
+        backgroundColor: APP_COLOR.main
     }
 })
 

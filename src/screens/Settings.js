@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {View, StyleSheet, Text, Switch} from "react-native";
 import {connect} from "react-redux";
-import Slider from '@react-native-community/slider';
+import { Slider } from 'react-native-elements';
 
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {

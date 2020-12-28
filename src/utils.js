@@ -28,6 +28,7 @@ export let WIDTH_OF_SCREEN = SCREEN_WIDTH;
 import Ripple from 'react-native-material-ripple';
 import {RESULTS} from "react-native-permissions";
 import FastImage from "react-native-fast-image";
+import LottieView from "lottie-react-native";
 
 export const languageRestart = async () => {
 
@@ -66,8 +67,21 @@ export const TYPE_OF_SNACK_BAR = {
     WARNING: 1,
     GOOD: 2
 }
+export const AppUnderMaintain=()=>{
+    return <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+        <Text style={{
+            fontSize:calculateFontSizeByScreen(16),
+            color:'black',
+
+        }}>האפליקציה בתחזוקה כרגע, נחזור בהקדם...</Text>
+        <LottieView style={{height: HEIGHT_OF_SCREEN / 2}}
+                    source={require('../res/animation/maintain.json')} autoPlay loop/>
+    </View>
+}
 export const DEFINITIONS = {
     IS_LOG_IN: 'isLogIn',
+    NEED_UPDATE:'needUpdate',
+    APP_UNDER_MAINTAIN:'appUnderMaintain',
     SHOW_SPLASH_SCREEN:'splashScreen',
     TEXT_SIZE: 'textSize',
     KEYBOARD_HEIGHT:'keyboardHeight',
