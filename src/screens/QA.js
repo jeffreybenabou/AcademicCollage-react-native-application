@@ -180,12 +180,18 @@ class QA extends React.Component {
 
     sendNotification = async (title, body, imagePath) => {
 
+
         const data = {
             topic: this.props[DEFINITIONS.COURSE_CODE],
             title: title,
             body: body,
             image: imagePath
         }
+        this.setState({
+            messageIsSending:false,
+            messageValue:''
+        })
+        console.log("message before",data)
 
         /*  if(__DEV__)
           functions().useFunctionsEmulator('http://localhost:5001');*/
@@ -364,17 +370,16 @@ class QA extends React.Component {
                                     console.log('Image uploaded to the bucket!');
                                 }).catch((e) => console.log('uploading image error => ', e));
                             })
-                            if (this.state.images.length == 0)
-                                this.sendNotification("הודעה מאת- " + this.props[DEFINITIONS.USER][DEFINITIONS.USER_NAME], this.state.messageValue, "");
+                            console.log(this.state.messageValue)
 
                             firestore()
                                 .collection(this.props[DEFINITIONS.COURSE_CODE])
                                 .doc(this.state.currentPickChat === 0 ? "courseMessages" : 'generalMessages')
                                 .update(objectToAdd).then(()=>{
-                                this.setState({
-                                    messageIsSending:false,
-                                    messageValue:''
-                                })
+                                if (this.state.images.length == 0)
+                                    this.sendNotification("הודעה מאת- " + this.props[DEFINITIONS.USER][DEFINITIONS.USER_NAME], this.state.messageValue, "");
+
+
                             });
                         } else {
                             this.props[SET_STATE]({
