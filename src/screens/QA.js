@@ -227,20 +227,20 @@ class QA extends React.Component {
                     }}
                     textStyle={{
                         fontWeight: this.state.currentPickChat === 0 ? 'bold' : undefined,
-                        fontSize: calculateFontSizeByScreen(16),
+                        fontSize: calculateFontSizeByScreen(14),
                         color: this.state.currentPickChat === 0 ? APP_COLOR.main : 'gray',
                         paddingBottom: this.state.currentPickChat === 0 ? '2%' : 0
                     }}
                     style={{
 
-                        borderBottomWidth: this.state.currentPickChat === 0 ? 1 : 0,
+                        borderBottomWidth: this.state.currentPickChat === 0 ? 2 : 0,
                         borderColor: APP_COLOR.iconColor
                     }}
                     text={"שאלות בנושא השיעור"}
                 />
                 <CustomButton
                     textStyle={{
-                        fontSize: calculateFontSizeByScreen(16),
+                        fontSize: calculateFontSizeByScreen(14),
                         color: this.state.currentPickChat === 1 ? APP_COLOR.main : 'gray',
                         paddingBottom: this.state.currentPickChat === 1 ? '2%' : 0,
                         fontWeight: this.state.currentPickChat === 1 ? 'bold' : undefined
@@ -248,7 +248,7 @@ class QA extends React.Component {
                     }}
                     style={{
                         borderColor: APP_COLOR.iconColor,
-                        borderBottomWidth: this.state.currentPickChat === 1 ? 1 : 0
+                        borderBottomWidth: this.state.currentPickChat === 1 ? 2 : 0
                     }}
                     onPress={() => {
                         this.setState({

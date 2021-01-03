@@ -74,7 +74,7 @@ const DrawerContent = (props) => {
     const props2 = props.props.props;
 
     return <SafeAreaView
-        style={{flex: 1, zIndex: 1, backgroundColor: APP_COLOR.screenBackground, alignItems: 'flex-start'}}>
+        style={{flex: 1, zIndex: 1,paddingStart:'6%', backgroundColor: APP_COLOR.screenBackground, alignItems: 'flex-start'}}>
 
 
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: '5%'}}>
@@ -155,6 +155,7 @@ const DrawerButton = (props) => {
             width: '100%',
             flexDirection: 'row-reverse',
             padding: WIDTH_OF_SCREEN / 30,
+
         }}
         text={props.text}
         iconType={props.icon}/>

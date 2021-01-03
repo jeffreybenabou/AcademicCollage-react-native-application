@@ -172,61 +172,75 @@ export const SetIcon = (props) => {
     switch (props.iconType) {
 
         case ICON_TYPES.LEFT:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/left.png')}/>
         case ICON_TYPES.PASSWORD:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/luggage.png')}/>
         case ICON_TYPES.USER_NAME:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/user.png')}/>
         case ICON_TYPES.FACEBOOK:
-            return <Image style={{width: WIDTH_OF_SCREEN / 10 + iconSize, height: WIDTH_OF_SCREEN / 10 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 10 + iconSize, height: WIDTH_OF_SCREEN / 10 + iconSize}}
                           source={require('../res/icons/facebook.png')}/>
         case ICON_TYPES.GMAIL:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/gmail.png')}/>
         case ICON_TYPES.ALL_CATEGORIES:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/tasks.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                           source={require('../res/icons/tasks.png')}/>
+            </View>
         case ICON_TYPES.CHAT:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/chat.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                       source={require('../res/icons/chat.png')}/>
+            </View>
         case ICON_TYPES.SOLUTION:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/testing.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                       source={require('../res/icons/testing.png')}/>
+            </View>
         case ICON_TYPES.SETTINGS:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/options.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                       source={require('../res/icons/options.png')}/>
+            </View>
         case ICON_TYPES.HOME_WORK:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/comments.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                       source={require('../res/icons/comments.png')}/>
+            </View>
         case ICON_TYPES.LOG_OUT:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/exit.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+                       source={require('../res/icons/exit.png')}/>
+            </View>
         case ICON_TYPES.ARROW_DOWN:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/down-arrow.png')}/>
         case ICON_TYPES.ARROW_UP:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/up-arrow.png')}/>
         case ICON_TYPES.COPY:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/copy.png')}/>
         case ICON_TYPES.APPLE:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/apple.png')}/>
 
         case ICON_TYPES.CLOSE:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/close-icon-29.png')}/>
         case ICON_TYPES.DRAWER:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/menu.png')}/>
         case ICON_TYPES.FULL_SCREEN:
-            return <Image style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
                           source={require('../res/icons/full-screen.png')}/>
-
+        case ICON_TYPES.SEARCH:
+            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                          source={require('../res/icons/search.png')}/>
         default:
             return <View/>
     }
@@ -234,7 +248,7 @@ export const SetIcon = (props) => {
 }
 
 export const isNotUndefined = (value) => {
-    return typeof (value) !== 'undefined' && value != null && value != 'undefined';
+    return typeof (value) !== undefined&& typeof (value) !== 'undefined'&&typeof (value) != 'undefined' && value != null && value != 'undefined';
 };
 
 SetIcon.props = {
@@ -246,6 +260,7 @@ SetIcon.props = {
 export const ICON_TYPES = {
     FACEBOOK: 'facebook',
     COPY: 'copy',
+    SEARCH:'search',
     FULL_SCREEN:'fullScreen',
     GMAIL: 'gmail',
     CLOSE:'close',
@@ -317,7 +332,7 @@ export const CustomInput = (props) => {
         </Ripple>
 
         <View style={{marginStart: WIDTH_OF_SCREEN / 80}}/>
-        <TextInput
+        <TextInput placeholderTextColor={"gray"}
             multiline={props.multiline}
             autoCapitalize={"none"}
             style={props.textStyle}

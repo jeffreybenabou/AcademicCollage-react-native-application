@@ -4,6 +4,8 @@ import React, {useEffect,} from "react";
 * */
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {connect} from "react-redux";
+import InAppUpdate from '../InAppUpdate'
+
 import {
     View,
     StyleSheet,
@@ -52,6 +54,11 @@ const Main = (props) => {
     useEffect(() => {
 
 
+
+
+
+        if(Platform.OS==="android")
+            InAppUpdate.checkUpdate()
         setListeners();
         checkRtl();
         checkVersion();
@@ -67,6 +74,7 @@ const Main = (props) => {
                 interstitial.show()
             }
         });
+        if(!__DEV__)
         interstitial.load();
     }
 

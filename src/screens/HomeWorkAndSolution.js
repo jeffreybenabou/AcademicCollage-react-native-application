@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {View, StyleSheet, FlatList, TouchableOpacity, Text, ScrollView} from "react-native";
+import React, {useEffect, useRef, useState} from "react";
+import {View, StyleSheet, FlatList, TouchableOpacity, Text, ScrollView, Platform} from "react-native";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {
@@ -18,7 +18,18 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
     const [value, setValue] = useState('');
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [firstInit, setFirstInit] = useState(true);
     const [homeWorkObject, setHomeWorkObject] = useState({});
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const flatListRef = useRef()
+    useEffect(()=>{
+        if(firstInit&&filteredData.length>0){
+            console.log("filteredData.length",filteredData.length)
+            setCurrentIndex(filteredData.length-1)
+            setFirstInit(false)
+        }
+
+    },[filteredData])
     useEffect(() => {
         HomeWorkAndSolutionProps.navigation.addListener('blur', (e) => {
             setFilteredData([])
@@ -28,6 +39,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
         });
         HomeWorkAndSolutionProps.navigation.addListener('focus', async () => {
             loadDataFromFireBase();
+
         });
 
         loadDataFromFireBase();
@@ -44,7 +56,8 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     .collection("android2020").doc("homeWork").set(a)
 
             })*/
-    }, [])
+    }, []);
+
 
     const loadDataFromFireBase = () => {
         firestore()
@@ -53,7 +66,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
 
 
             Object.keys(items.data()).map((info, index) => {
-                if (index === 0) {
+                if (index === Object.keys(items.data()).length - 1) {
                     setHomeWorkObject(items.data()[info].information);
                 }
                 filteredData.push(items.data()[info])
@@ -71,6 +84,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
         return <CustomButton
             onPress={() => {
                 setHomeWorkObject(filteredData[itemProps.index].information);
+                setCurrentIndex(itemProps.index);
 
             }}
             text={itemProps.item.titleOfWork}
@@ -83,18 +97,19 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             }}
 
 
-
             style={{
-                borderRadius: HEIGHT_OF_SCREEN / 50,
-                marginEnd: WIDTH_OF_SCREEN / 30,
 
+                borderColor: currentIndex == itemProps.index ? "black" : 'transparent',
+                borderRadius: HEIGHT_OF_SCREEN / 30,
+                marginEnd: WIDTH_OF_SCREEN / 30,
+                borderWidth: 1,
                 padding: WIDTH_OF_SCREEN / 30,
                 backgroundColor: APP_COLOR.main,
             }}
 
         />
     }
-
+    const keyExtractor = (item, index) => "" + index;
     return <View style={style.container}>
         <View style={{
             flex: 1, borderTopRightRadius: WIDTH_OF_SCREEN / 10,
@@ -103,36 +118,52 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             <CustomInput
                 value={value}
                 textStyle={{
+                    flex: 1,
+                    textAlign: 'right',
+                    color: 'black',
+                    paddingStart: WIDTH_OF_SCREEN / 25,
                     fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
                 }}
                 onChangeText={(value) => {
                     setValue(value);
-                    const searchResult=data.filter((item)=>{
-                        return item.title.includes(value)||item.titleOfWork.includes(value)||item.subTitle.includes(value)
+                    const searchResult = data.filter((item) => {
+                        return item.title.includes(value) || item.titleOfWork.includes(value) || item.subTitle.includes(value)
                     })
                     setFilteredData(searchResult)
 
                 }}
 
                 style={{
+                    flexDirection: 'row-reverse',
                     margin: '5%',
                     height: HEIGHT_OF_SCREEN / 15,
                     borderRadius: HEIGHT_OF_SCREEN / 30,
                     paddingStart: '5%',
                     ...elevationShadowStyle(3), backgroundColor: 'white'
                 }}
+
+                iconType={ICON_TYPES.SEARCH}
                 actionOnIconPress={() => {
 
                 }}
                 placeholder={"חפש תרגיל"}/>
-            <View style={{flex: 1,alignItems:'flex-start'}}>
-                <FlatList inverted={true}
+            <View style={{flex: 1, alignItems: 'flex-start'}}>
+                {
+                    filteredData.length>0&&
+                    <FlatList
+                        onContentSizeChange={(e) => {
 
-                    style={{marginHorizontal: '5%'}}
-                    horizontal={true}
-                    data={filteredData}
-                    renderItem={RenderItem}
-                />
+                            flatListRef.current.scrollToOffset({offset:Platform.OS==="android"?-e: e})
+                        }}
+                        ref={flatListRef}
+                        keyExtractor={keyExtractor}
+                        style={{marginHorizontal: '5%'}}
+                        horizontal={true}
+                        data={filteredData}
+                        renderItem={RenderItem} snapToAlignment={"end"}
+                    />
+
+                }
 
 
             </View>
@@ -140,9 +171,12 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                 flex: 7,
                 backgroundColor: 'white',
                 margin: '5%',
-                borderRadius: WIDTH_OF_SCREEN / 30, ...elevationShadowStyle(3)
+                borderRadius: HEIGHT_OF_SCREEN / 30, ...elevationShadowStyle(3)
             }}>
-                <ScrollView style={{marginBottom: HEIGHT_OF_SCREEN / 15,}}>
+                <ScrollView style={{
+                    margin: HEIGHT_OF_SCREEN / 80,
+                    marginBottom: HEIGHT_OF_SCREEN / 15 + HEIGHT_OF_SCREEN / 80,
+                }}>
                     {
                         Object.values(homeWorkObject).map((item) => {
                             if (item.includes("%b%")) {
@@ -206,8 +240,8 @@ const style = StyleSheet.create({
         backgroundColor: APP_COLOR.main,
     },
     solutionButton: {
-        borderBottomRightRadius: WIDTH_OF_SCREEN / 30,
-        borderBottomLeftRadius: WIDTH_OF_SCREEN / 30,
+        borderBottomRightRadius: HEIGHT_OF_SCREEN / 30,
+        borderBottomLeftRadius: HEIGHT_OF_SCREEN / 30,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',

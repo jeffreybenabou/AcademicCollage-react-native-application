@@ -254,7 +254,7 @@ const LoginScreen = (props) => {
                     iconType={ICON_TYPES.FACEBOOK}
                     textStyle={{textAlign: 'center', color: 'white'}}
                     style={[style.sendButton, style.socialLogin, {
-                        borderWidth: currentLoginMethod === 1 ? 1 : 0,
+                        borderWidth: currentLoginMethod === 1 ? 1.5 : 0,
                         borderColor: APP_COLOR.iconColor,
                         marginEnd: '5%',
                     }]}
@@ -343,7 +343,7 @@ const style = StyleSheet.create({
         ...elevationShadowStyle(3)
     },
     logo: {
-        margin:'15%',
+        margin:'20%',
         flex: 1
     },
     input: {
@@ -362,7 +362,7 @@ const style = StyleSheet.create({
         borderRadius: WIDTH_OF_SCREEN / 15,
         justifyContent: 'center',
         paddingHorizontal: '5%',
-        marginTop: '5%',
+
         backgroundColor: 'white',
         ...elevationShadowStyle(3)
     },

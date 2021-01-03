@@ -326,14 +326,15 @@ const AllCategories = (props) => {
                             }
                             style={{
                                 ...elevationShadowStyle(3),
-                                borderRadius: WIDTH_OF_SCREEN / 15,
-                                width: WIDTH_OF_SCREEN / 1.2,
-                                backgroundColor: isNotUndefined(item.type) ? '#4A65E3' : APP_COLOR.screenBackground,
-                                margin: '5%',
-                                height: HEIGHT_OF_SCREEN / 15,
+                                borderRadius: WIDTH_OF_SCREEN / 10,
+                                width: WIDTH_OF_SCREEN / 1.1,
+                                backgroundColor: isNotUndefined(item.type) ? '#4A65E3' : 'white',
+                                marginTop:'4%',
+                                minHeight: HEIGHT_OF_SCREEN / 15,
                                 alignItems: 'center',
                                 paddingHorizontal: '5%',
-                                justifyContent: 'space-between'
+                                justifyContent: 'space-between',
+                                margin:'1%'
                             }}
                             iconType={!isNotUndefined(item.type) ? ICON_TYPES.ARROW_DOWN : undefined}
                             text={item.text}/>
