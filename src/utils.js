@@ -105,7 +105,14 @@ export const DEFINITIONS = {
 
 }
 export const calculateFontSizeByScreen = (size) => {
-    return Math.round(PixelRatio.roundToNearestPixel(size));
+    const newSize = size * scale;
+    if (Platform.OS === 'ios') {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize));
+    } else {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+    }
+
+
 };
 
 

@@ -81,7 +81,7 @@ const AllCategories = (props) => {
                                 <Text
 
                                     style={{
-                                        fontSize: calculateFontSizeByScreen(12 + props[DEFINITIONS.TEXT_SIZE]),
+                                        fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                                         color: 'black',
                                         textAlign: 'right',
 
@@ -99,7 +99,7 @@ const AllCategories = (props) => {
                         objectToRender.push(
                             <Text
                                 style={{
-                                    fontSize: calculateFontSizeByScreen(12 + props[DEFINITIONS.TEXT_SIZE]),
+                                    fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                                     color: 'gray',
                                     textAlign: 'left',
                                 }}>{item[item2].toString().replace(/~/g, "\n")}</Text>)
@@ -186,7 +186,7 @@ const AllCategories = (props) => {
                     } else {
                         objectToRender.push(<Text
                             style={{
-                                fontSize: calculateFontSizeByScreen(12 + props[DEFINITIONS.TEXT_SIZE]),
+                                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                                 color: 'gray',
                                 textAlign: 'left',
                             }}>{item[item2]}</Text>)
