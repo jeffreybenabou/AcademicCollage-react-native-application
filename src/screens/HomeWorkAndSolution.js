@@ -8,7 +8,7 @@ import {
     CustomInput, DEFINITIONS,
     elevationShadowStyle,
     HEIGHT_OF_SCREEN,
-    ICON_TYPES, TYPE_OF_SNACK_BAR,
+    ICON_TYPES, TYPE_OF_SNACK_BAR, typeOfComponent,
     WIDTH_OF_SCREEN
 } from "../utils";
 import firestore from '@react-native-firebase/firestore'
@@ -21,6 +21,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [firstInit, setFirstInit] = useState(true);
+    const [solution,setSolution]=useState([]);
     const [homeWorkObject, setHomeWorkObject] = useState({});
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef()
@@ -76,6 +77,19 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
 
             setFilteredData(filteredData);
             setData(filteredData);
+
+
+        })
+        firestore()
+            .collection(HomeWorkAndSolutionProps[DEFINITIONS.COURSE_CODE]).doc("solution").get().then((items) => {
+            const solution = [];
+
+
+            Object.keys(items.data()).map((info, index) => {
+                solution.push(items.data()[info])
+            })
+
+            setSolution(solution);
 
 
         })
@@ -179,33 +193,9 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     marginBottom: HEIGHT_OF_SCREEN / 15 + HEIGHT_OF_SCREEN / 80,
                 }}>
                     {
-                        Object.values(homeWorkObject).map((item) => {
-                            if(item.includes("%title%")){
-                                return <Text
-                                    style={{
-                                        fontWeight:'bold',
-                                        textAlign: 'center',
-                                        padding: '2%',
-                                        fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
-                                    }}>{item.replace("%title%", "")}</Text>
-                            }
-                            else if (item.includes("%b%")) {
+                        Object.keys(homeWorkObject).sort().map((item) => {
+                           return  typeOfComponent(homeWorkObject[item],HomeWorkAndSolutionProps)
 
-                                return <Text
-                                    style={{
-                                        fontWeight:'bold',
-                                        textAlign: 'left',
-                                        padding: '2%',
-                                        fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
-                                    }}>{item.replace("%b%", "")}</Text>
-                            } else {
-                                return <Text style={{
-                                    fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE]),
-                                    textAlign: 'left',
-                                    paddingHorizontal: '2%'
-                                }}>{item.replace(/~/g, "\n")}</Text>
-
-                            }
                         })
                     }
 
@@ -218,6 +208,59 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     }}
                     onPress={() => {
                         HomeWorkAndSolutionProps[SET_STATE]({
+                            [DEFINITIONS.POPUP]:{
+                                [DEFINITIONS.POPUP_VISIBLE]:true,
+                                [DEFINITIONS.POPUP_CHILDREN]:()=>{
+
+                                    return <View style={{
+                                        backgroundColor:APP_COLOR.screenBackground,
+                                        width:WIDTH_OF_SCREEN/1.2,
+                                        height:HEIGHT_OF_SCREEN/1.5,
+                                        padding:WIDTH_OF_SCREEN/30,
+                                        borderRadius: HEIGHT_OF_SCREEN / 30,
+
+                                    }}>
+                                        <CustomButton
+                                            style={{
+                                                alignItems: 'flex-end',
+                                                justifyContent: 'flex-end',
+                                                margin: '2%',
+                                                top: WIDTH_OF_SCREEN / 100,
+                                                zIndex: 100,
+
+
+                                                right: WIDTH_OF_SCREEN / 100
+
+                                            }}
+                                            iconSize={WIDTH_OF_SCREEN / 50}
+                                            iconType={ICON_TYPES.CLOSE}
+                                            onPress={() => {
+                                                HomeWorkAndSolutionProps[SET_STATE]({
+                                                    [DEFINITIONS.POPUP]: {
+                                                        [DEFINITIONS.POPUP_VISIBLE]: false
+                                                    }
+
+                                                })
+                                            }}/>
+                                        <Text style={{
+                                            fontWeight:'bold',
+                                            fontSize:calculateFontSizeByScreen(14),
+                                            textAlign:'center',
+                                        }}>פתרון התרגיל</Text>
+                                        <ScrollView>
+                                            {
+                                                Object.keys(solution[currentIndex]).sort().map((item)=>{
+
+                                                    return  typeOfComponent(solution[currentIndex][item],HomeWorkAndSolutionProps)
+                                                })
+                                            }
+                                        </ScrollView>
+
+                                    </View>
+                                }
+                            }
+                        })
+                        /*HomeWorkAndSolutionProps[SET_STATE]({
                             [DEFINITIONS.SNACK_BAR]:
                                 {
                                     [DEFINITIONS.SHOW_SNACK_BAR]: true,
@@ -228,7 +271,7 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                                     [DEFINITIONS.TEXT_ON_SNACK_BAR]: 'פתרון לתרגיל זה אינו זמין כרגע.',
 
                                 }
-                        })
+                        })*/
                     }}
 
                     text={"פתרון התרגיל"}

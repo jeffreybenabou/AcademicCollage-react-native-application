@@ -8,7 +8,7 @@ import {
     Image,
     ScrollView,
     Modal,
-    ActivityIndicator
+    ActivityIndicator, SafeAreaView
 } from "react-native";
 
 import React from "react";
@@ -29,6 +29,9 @@ import Ripple from 'react-native-material-ripple';
 import {RESULTS} from "react-native-permissions";
 import FastImage from "react-native-fast-image";
 import LottieView from "lottie-react-native";
+import Clipboard from "@react-native-community/clipboard";
+import {SET_STATE} from "./redux/types";
+import ImageZoom from "react-native-image-pan-zoom";
 
 export const languageRestart = async () => {
 
@@ -165,9 +168,9 @@ export const Popup = (props) => {
         }}>
 
 
-                {
-                    props.children()
-                }
+            {
+                props.children()
+            }
 
 
         </View>
@@ -178,7 +181,7 @@ Popup.props = {
     children: ""
 }
 
-export const shuffleArray=(array)=> {
+export const shuffleArray = (array) => {
     let i = array.length - 1;
     for (; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -187,6 +190,205 @@ export const shuffleArray=(array)=> {
         array[j] = temp;
     }
     return array;
+}
+
+export const typeOfComponent = (item, props) => {
+    if (item.includes("%title%")) {
+        return <Text
+            style={{
+                fontWeight: 'bold',
+                textAlign: 'center',
+                padding: '2%',
+                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE])
+            }}>{item.replace("%title%", "")}</Text>
+    } else if (item.toString().includes("#code#")) {
+        return <View style={{
+
+            backgroundColor: 'rgb(233,232,232)',
+
+            flexDirection: 'row',
+            borderRadius: WIDTH_OF_SCREEN / 50,
+        }}>
+            <CustomButton
+                style={{zIndex: 100, padding: '5%', alignSelf: 'flex-start'}}
+                iconType={ICON_TYPES.COPY}
+                onPress={() => {
+                    Clipboard.setString(item.toString().replace("#code#", "").replace(/~/g, "\n"));
+                    props[SET_STATE]({
+                        [DEFINITIONS.SNACK_BAR]:
+                            {
+                                [DEFINITIONS.SHOW_SNACK_BAR]: true,
+                                [DEFINITIONS.ACTION_ON_SNACK_BAR]: () => {
+                                },
+                                [DEFINITIONS.SNACK_BAR_TYPE]: TYPE_OF_SNACK_BAR.GOOD,
+                                [DEFINITIONS.TITLE_ON_SNACK_BAR]: 'קטע הקוד הועתק אל המכשיר',
+                                [DEFINITIONS.TEXT_ON_SNACK_BAR]: '',
+
+                            }
+                    })
+                }}
+            />
+
+            <Text
+
+                style={{
+                    flex: 1,
+                    margin: '5%',
+
+                    fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                    color: 'black',
+                    textAlign: 'right',
+
+                }}>{item.toString().replace(/#code#/g, "").replace(/~/g, "\n")}</Text>
+        </View>
+
+    } else if (item.toString().includes("%b%")) {
+        return <Text style={{
+            fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+            textAlign: 'left',
+            color: 'gray',
+            fontWeight: 'bold'
+        }}>{item.toString().replace(/%b%/g, "")}</Text>
+    } else if (item.toString().includes("~")) {
+        return <Text
+            style={{
+                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                color: 'gray',
+                textAlign: 'left',
+            }}>{item.toString().replace(/~/g, "\n")}</Text>
+    } else if (item.toString().includes("!image!")) {
+        return <CustomButton
+            onPress={() => {
+                props[SET_STATE]({
+                    [DEFINITIONS.POPUP]: {
+                        [DEFINITIONS.POPUP_CHILDREN]:
+                            () => <SafeAreaView
+                                style={{
+                                    flex: 1, height: HEIGHT_OF_SCREEN, width: WIDTH_OF_SCREEN
+                                }}
+                            >
+                                <CustomButton
+                                    style={{
+                                        backgroundColor:'white',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        zIndex: 100,
+                                        position: 'absolute',
+                                        margin: '2%',
+                                        borderRadius:WIDTH_OF_SCREEN/10,
+                                    }}
+                                    iconSize={WIDTH_OF_SCREEN / 50}
+                                    iconType={ICON_TYPES.CLOSE}
+                                    onPress={() => {
+                                        props[SET_STATE]({
+                                            [DEFINITIONS.POPUP]: {
+                                                [DEFINITIONS.POPUP_VISIBLE]: false
+                                            }
+
+                                        })
+                                    }}/>
+                                <ImageZoom
+                                    style={{
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+
+                                    }
+                                    }
+                                    cropHeight={HEIGHT_OF_SCREEN}
+                                    cropWidth={WIDTH_OF_SCREEN}
+                                    imageWidth={WIDTH_OF_SCREEN}
+                                    imageHeight={HEIGHT_OF_SCREEN}>
+
+                                    <FastImage
+                                        resizeMode={"contain"}
+                                        style={{
+
+                                            transform: [
+                                                {
+                                                    rotate: '90deg'
+                                                }
+                                            ],
+                                            alignSelf: 'center',
+                                            height:'100%',
+                                            width:HEIGHT_OF_SCREEN/1.2
+
+                                        }}
+                                        source={{uri: item.toString().replace("!image!", "")}}/>
+
+                                </ImageZoom>
+                            </SafeAreaView>
+
+                        ,
+                        [DEFINITIONS.POPUP_VISIBLE]: true
+                    }
+                })
+            }}
+            children={
+
+
+                <FastImage
+                    resizeMode={"stretch"}
+                    style={{
+                        borderRadius: WIDTH_OF_SCREEN / 50,
+                        backgroundColor: 'white',
+                        width: WIDTH_OF_SCREEN / 1.2,
+                        height: HEIGHT_OF_SCREEN / 3,
+                        marginBottom: HEIGHT_OF_SCREEN / 50
+
+                    }}
+                    source={{uri: item.toString().replace("!image!", "")}}>
+                    <View style={{
+                        borderRadius: WIDTH_OF_SCREEN / 50,
+                        margin: '1%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 100,
+                        backgroundColor: 'rgba(256,256,256,0.8)',
+                        position: 'absolute'
+                    }}>
+                        <SetIcon iconSize={0} iconType={ICON_TYPES.FULL_SCREEN}/>
+                    </View>
+                </FastImage>
+
+            }
+
+
+        />
+
+    } else if (item.toString().includes("!button!")) {
+        return <CustomButton
+            text={item.toString().split("!index!")[0].replace('!button!', "")}
+            textStyle={{
+                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                color: 'white',
+                textAlign: 'left',
+            }}
+            style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: WIDTH_OF_SCREEN / 1.1,
+                borderRadius: WIDTH_OF_SCREEN / 10,
+                minHeight: HEIGHT_OF_SCREEN / 15,
+                backgroundColor: APP_COLOR.main
+            }}
+            onPress={() => {
+                const index = item.toString().replace("!image!", "").split("!index!")[1]
+                props.navigation.navigate(SCREEN_NAMES.HOME_WORK, {index: parseInt(index)});
+            }
+            }
+
+
+        />
+
+    } else {
+        return <Text
+            style={{
+                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                color: 'gray',
+                textAlign: 'left',
+            }}>{item}</Text>
+    }
 }
 
 export const SCREEN_NAMES = {
@@ -202,23 +404,28 @@ export const SetIcon = (props) => {
     switch (props.iconType) {
 
         case ICON_TYPES.LEFT:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/left.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/left.png')}/>
         case ICON_TYPES.PASSWORD:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/luggage.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/luggage.png')}/>
         case ICON_TYPES.USER_NAME:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/user.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/user.png')}/>
         case ICON_TYPES.FACEBOOK:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 10 + iconSize, height: WIDTH_OF_SCREEN / 10 + iconSize}}
-                              source={require('../res/icons/facebook.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 10 + iconSize, height: WIDTH_OF_SCREEN / 10 + iconSize}}
+                source={require('../res/icons/facebook.png')}/>
         case ICON_TYPES.GMAIL:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/gmail.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/gmail.png')}/>
         case ICON_TYPES.ALL_CATEGORIES:
             return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
+                <Image  style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/tasks.png')}/>
             </View>
         case ICON_TYPES.CHAT:
@@ -247,30 +454,38 @@ export const SetIcon = (props) => {
                        source={require('../res/icons/exit.png')}/>
             </View>
         case ICON_TYPES.ARROW_DOWN:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/down-arrow.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/down-arrow.png')}/>
         case ICON_TYPES.ARROW_UP:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/up-arrow.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/up-arrow.png')}/>
         case ICON_TYPES.COPY:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/copy.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/copy.png')}/>
         case ICON_TYPES.APPLE:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/apple.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/apple.png')}/>
 
         case ICON_TYPES.CLOSE:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/close-icon-29.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/close-icon-29.png')}/>
         case ICON_TYPES.DRAWER:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/menu.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/menu.png')}/>
         case ICON_TYPES.FULL_SCREEN:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/full-screen.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/full-screen.png')}/>
         case ICON_TYPES.SEARCH:
-            return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                              source={require('../res/icons/search.png')}/>
+            return <FastImage
+                style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
+                source={require('../res/icons/search.png')}/>
         default:
             return <View/>
     }
