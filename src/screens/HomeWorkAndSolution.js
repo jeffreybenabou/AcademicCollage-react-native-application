@@ -13,8 +13,10 @@ import {
 } from "../utils";
 import firestore from '@react-native-firebase/firestore'
 import {SET_STATE} from "../redux/types";
+import {useRoute} from "@react-navigation/core";
 
 export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
+
     const [value, setValue] = useState('');
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -23,10 +25,20 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef()
     useEffect(()=>{
-        if(firstInit&&filteredData.length>0){
-            console.log("filteredData.length",filteredData.length)
-            setCurrentIndex(filteredData.length-1)
+        if(filteredData.length>0){
+
+            try {
+
+                flatListRef.current.scrollToIndex({index:HomeWorkAndSolutionProps.route.params.index})
+                setCurrentIndex(HomeWorkAndSolutionProps.route.params.index)
+                setHomeWorkObject(filteredData[HomeWorkAndSolutionProps.route.params.index].information)
+            }catch (e){
+                setCurrentIndex(filteredData.length-1)
+
+                console.log(e)
+            }
             setFirstInit(false)
+
         }
 
     },[filteredData])
@@ -37,25 +49,14 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             setFilteredData([])
             setHomeWorkObject({})
         });
-        HomeWorkAndSolutionProps.navigation.addListener('focus', async () => {
+        HomeWorkAndSolutionProps.navigation.addListener('focus', async (e) => {
             loadDataFromFireBase();
+
+
+
 
         });
 
-        loadDataFromFireBase();
-        /* firestore()
-            .collection("androidHomeWork")
-            .get()
-            .then((lessons) => {
-
-                let a= {};
-                lessons.docs.map((item,index)=>{
-                    a={...a,[index<9?index:"9"+index]:item.data()}
-                })
-                firestore()
-                    .collection("android2020").doc("homeWork").set(a)
-
-            })*/
     }, []);
 
 

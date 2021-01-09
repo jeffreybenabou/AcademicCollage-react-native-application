@@ -3,15 +3,10 @@ import {
     View,
     StyleSheet,
     Linking,
-    ScrollView,
     Text,
     FlatList,
-    TouchableOpacity,
-    Image,
-    Keyboard,
-    Platform, SafeAreaView
+    SafeAreaView
 } from "react-native";
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 
 import Clipboard from '@react-native-community/clipboard';
 
@@ -22,21 +17,20 @@ import {
     DEFINITIONS,
     elevationShadowStyle,
     HEIGHT_OF_SCREEN, ICON_TYPES,
-    isNotUndefined, SetIcon, TYPE_OF_SNACK_BAR,
+    isNotUndefined, SCREEN_NAMES, SetIcon, shuffleArray, TYPE_OF_SNACK_BAR,
     WIDTH_OF_SCREEN
 } from "../utils";
 import {SET_STATE} from "../redux/types";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import ImageZoom from 'react-native-image-pan-zoom';
-import functions from "@react-native-firebase/functions";
-import messaging from '@react-native-firebase/messaging'
 import FastImage from "react-native-fast-image";
 
 const AllCategories = (props) => {
     const [lessons, setLessons] = useState([])
     const [openLessons, setOpenLessons] = useState([]);
     const [buttonsPlaceHolder, setButtonPlaceHolder] = useState([]);
+    const [didYouKnow, setDidYouKnow] = useState([]);
 
 
     const setTheConfigItem = (item) => {
@@ -53,13 +47,14 @@ const AllCategories = (props) => {
                     if ((item[item2].toString().includes("#code#"))) {
                         objectToRender.push(
                             <View style={{
-                                marginVertical: '5%',
+
                                 backgroundColor: 'rgba(255,255,255,1)',
-                                width: '100%',
+
+                                flexDirection: 'row',
                                 borderRadius: WIDTH_OF_SCREEN / 50,
                             }}>
                                 <CustomButton
-                                    style={{zIndex: 100, position: 'absolute', padding: WIDTH_OF_SCREEN / 20}}
+                                    style={{zIndex: 100, padding: '5%', alignSelf: 'flex-start'}}
                                     iconType={ICON_TYPES.COPY}
                                     onPress={() => {
                                         Clipboard.setString('hello world');
@@ -81,11 +76,14 @@ const AllCategories = (props) => {
                                 <Text
 
                                     style={{
+                                        flex: 1,
+                                        margin: '5%',
+
                                         fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                                         color: 'black',
                                         textAlign: 'right',
 
-                                    }}>{item[item2].toString().replace(/#code#/g, "\n").replace(/~/g, "\n")}</Text>
+                                    }}>{item[item2].toString().replace(/#code#/g, "").replace(/~/g, "\n")}</Text>
                             </View>
                         )
                     } else if (item[item2].toString().includes("%b%")) {
@@ -154,35 +152,62 @@ const AllCategories = (props) => {
                                 children={
 
 
-                                        <FastImage
-                                            resizeMode={"stretch"}
-                                            style={{
-                                                borderRadius:WIDTH_OF_SCREEN/50,
-                                                backgroundColor: 'white',
-                                                width: WIDTH_OF_SCREEN / 1.2,
-                                                height: HEIGHT_OF_SCREEN/3,
-                                                marginBottom:HEIGHT_OF_SCREEN/50
+                                    <FastImage
+                                        resizeMode={"stretch"}
+                                        style={{
+                                            borderRadius: WIDTH_OF_SCREEN / 50,
+                                            backgroundColor: 'white',
+                                            width: WIDTH_OF_SCREEN / 1.2,
+                                            height: HEIGHT_OF_SCREEN / 3,
+                                            marginBottom: HEIGHT_OF_SCREEN / 50
 
-                                            }}
-                                            source={{uri: item[item2].toString().replace("!image!", "")}}>
-                                            <View style={{
-                                                borderRadius: WIDTH_OF_SCREEN / 50,
-                                                margin: '1%',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                zIndex: 100,
-                                                backgroundColor: 'rgba(256,256,256,0.8)',
-                                                position: 'absolute'
-                                            }}>
-                                                <SetIcon iconSize={0} iconType={ICON_TYPES.FULL_SCREEN}/>
-                                            </View>
-                                        </FastImage>
+                                        }}
+                                        source={{uri: item[item2].toString().replace("!image!", "")}}>
+                                        <View style={{
+                                            borderRadius: WIDTH_OF_SCREEN / 50,
+                                            margin: '1%',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            zIndex: 100,
+                                            backgroundColor: 'rgba(256,256,256,0.8)',
+                                            position: 'absolute'
+                                        }}>
+                                            <SetIcon iconSize={0} iconType={ICON_TYPES.FULL_SCREEN}/>
+                                        </View>
+                                    </FastImage>
 
                                 }
 
 
                             />
                         )
+                    } else if (item[item2].toString().includes("!button!")) {
+                        objectToRender.push(
+                            <CustomButton
+                                text={item[item2].toString().split("!index!")[0].replace('!button!', "")}
+                                textStyle={{
+                                    fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                                    color: 'white',
+                                    textAlign: 'left',
+                                }}
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignSelf: 'center',
+                                    width: WIDTH_OF_SCREEN / 1.1,
+                                    borderRadius: WIDTH_OF_SCREEN / 10,
+                                    minHeight: HEIGHT_OF_SCREEN / 15,
+                                    backgroundColor: APP_COLOR.main
+                                }}
+                                onPress={() => {
+                                    const index=item[item2].toString().replace("!image!", "").split("!index!")[1]
+                                    props.navigation.navigate(SCREEN_NAMES.HOME_WORK,{index:parseInt(index)});
+                                }
+                                }
+
+
+                            />)
+
                     } else {
                         objectToRender.push(<Text
                             style={{
@@ -223,20 +248,7 @@ const AllCategories = (props) => {
         setOpenLessons(openLessons2);
     }
     const loadLessonsNamesFromFB = async () => {
-        /* await firestore()
-             .collection("webHomeWork")
-             .get()
-             .then((lessons) => {
 
-                 let a= {};
-                 lessons.docs.map((item,index)=>{
-                     a={...a,[index<9?index:"9"+index]:item.data()}
-
-                 })
-                  firestore()
-                     .collection("web2020").doc("homeWork").set(a)
-
-             })*/
 
         await firestore()
             .collection("" + props[DEFINITIONS.COURSE_CODE])
@@ -264,8 +276,155 @@ const AllCategories = (props) => {
             loadLessonsNamesFromFB();
 
         });
+        loadDidYouKnow();
 
     }, [])
+    useEffect(() => {
+        props[SET_STATE]({
+            [DEFINITIONS.POPUP]: {
+                [DEFINITIONS.POPUP_CHILDREN]: () => {
+                    const [indexOfDidYouKnow, setIndexOfDidYouKnow] = useState(0);
+                    return <View
+                        style={{
+                            borderRadius: WIDTH_OF_SCREEN / 13,
+                            backgroundColor: 'white',
+                            width: WIDTH_OF_SCREEN / 1.1,
+                        }}>
+                        <CustomButton
+                            onPress={() => {
+                                props[SET_STATE]({
+                                    [DEFINITIONS.POPUP]: {
+                                        [DEFINITIONS.POPUP_VISIBLE]: false
+                                    }
+                                })
+                            }
+                            }
+                            iconType={ICON_TYPES.CLOSE} iconSize={WIDTH_OF_SCREEN / 120}
+
+                            style={{
+                                position: 'absolute',
+                                top: WIDTH_OF_SCREEN / 30,
+                                zIndex: 100,
+
+
+                                right: WIDTH_OF_SCREEN / 30
+                            }}/>
+
+                        <Text
+                            style={{
+
+                                paddingTop: '6%',
+
+                                textAlign: 'center',
+                                fontSize: calculateFontSizeByScreen(20),
+                                fontWeight: 'bold',
+                                color: APP_COLOR.main,
+                            }}>הידעת?</Text>
+                        <Text style={{
+
+                            padding: '6%',
+                            fontSize: calculateFontSizeByScreen(15),
+
+                        }}>{didYouKnow[indexOfDidYouKnow]}</Text>
+                        <View style={{
+                            padding: '6%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+
+                        }}>
+                            <CustomButton
+                                onPress={() => {
+                                    setIndexOfDidYouKnow((indexOfDidYouKnow) > 0 ? indexOfDidYouKnow - 1 : indexOfDidYouKnow)
+                                }
+                                }
+
+                                textStyle={{
+                                    fontWeight: 'bold',
+                                    fontSize: calculateFontSizeByScreen(14),
+                                    color: 'white',
+                                }}
+                                iconType={ICON_TYPES.ARROW_DOWN}
+                                style={{
+                                    transform: [
+                                        {rotate: '-90deg'},
+                                    ],
+
+                                }}/>
+
+                            <Text style={{
+                                color: 'black',
+                                fontSize: calculateFontSizeByScreen(12),
+
+                            }}>{indexOfDidYouKnow + 1}/{didYouKnow.length}</Text>
+                            <CustomButton
+                                onPress={() => {
+                                    setIndexOfDidYouKnow((indexOfDidYouKnow + 1) < didYouKnow.length ? indexOfDidYouKnow + 1 : indexOfDidYouKnow)
+                                }
+                                }
+
+                                iconType={ICON_TYPES.ARROW_DOWN}
+
+                                style={{
+                                    transform: [
+
+
+                                        {rotate: '90deg'},
+
+
+                                    ],
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}/>
+
+
+                        </View>
+
+                        <CustomButton
+                            onPress={() => {
+                                props[SET_STATE]({
+                                    [DEFINITIONS.POPUP]: {
+                                        [DEFINITIONS.POPUP_VISIBLE]: false
+                                    }
+                                })
+                            }
+                            }
+                            text={"הבנתי"}
+                            textStyle={{
+                                fontWeight: 'bold',
+                                fontSize: calculateFontSizeByScreen(14),
+                                color: 'white',
+                            }}
+
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: calculateFontSizeByScreen(20),
+                                fontWeight: 'bold',
+                                minHeight: HEIGHT_OF_SCREEN / 15,
+                                borderRadius: WIDTH_OF_SCREEN / 10,
+
+                                backgroundColor: APP_COLOR.main
+                            }}/>
+
+                    </View>
+                },
+                [DEFINITIONS.POPUP_VISIBLE]: true
+
+            }
+
+        })
+    }, [didYouKnow])
+
+    const loadDidYouKnow = () => {
+        firestore().collection(props[DEFINITIONS.COURSE_CODE]).doc("didYouKnow").get().then((test) => {
+            const didYouKnow = [];
+            Object.keys(test.data()).map((item) => {
+                didYouKnow.push(test.data()[item])
+            })
+
+            setDidYouKnow(shuffleArray(didYouKnow))
+        })
+    }
     return <View style={style.container}>
         <View
 
@@ -278,7 +437,7 @@ const AllCategories = (props) => {
 
 
             <FlatList
-                ListEmptyComponent={<View style={{flex:1,height:HEIGHT_OF_SCREEN}}></View>}
+                ListEmptyComponent={<View style={{flex: 1, height: HEIGHT_OF_SCREEN}}></View>}
                 keyExtractor={(item, index) => "" + index + "" + item.text}
                 data={buttonsPlaceHolder}
                 renderItem={(item2) => {
@@ -329,14 +488,14 @@ const AllCategories = (props) => {
                                 borderRadius: WIDTH_OF_SCREEN / 10,
                                 width: WIDTH_OF_SCREEN / 1.1,
                                 backgroundColor: isNotUndefined(item.type) ? '#4A65E3' : 'white',
-                                marginTop:'4%',
+                                marginTop: '4%',
                                 minHeight: HEIGHT_OF_SCREEN / 15,
                                 alignItems: 'center',
                                 paddingHorizontal: '5%',
                                 justifyContent: 'space-between',
-                                margin:'1%'
+                                margin: '1%'
                             }}
-                            iconType={!isNotUndefined(item.type) ? ICON_TYPES.ARROW_DOWN : undefined}
+                            iconType={!isNotUndefined(item.type) ?openLessons[item2.index]?ICON_TYPES.ARROW_UP: ICON_TYPES.ARROW_DOWN : undefined}
                             text={item.text}/>
                         <View key={"" + item2.index}
                               style={{width: WIDTH_OF_SCREEN / 1.2, alignItems: 'flex-start',}}>

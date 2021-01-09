@@ -1,10 +1,12 @@
-import React, {useEffect,} from "react";
+import React, {useEffect, useRef,} from "react";
 /*
 *
 * */
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {connect} from "react-redux";
 import InAppUpdate from '../InAppUpdate'
+
+
 
 import {
     View,
@@ -17,6 +19,8 @@ import {
     Keyboard,
     Linking
 } from "react-native";
+
+
 import LoginScreen from "./LoginScreen";
 import firestore from '@react-native-firebase/firestore'
 import LottieView from 'lottie-react-native';
@@ -51,13 +55,9 @@ import {BannerAd, BannerAdSize, TestIds} from '@react-native-firebase/admob';
 const adUnitIdBanner = __DEV__ ? TestIds.BANNER : 'ca-app-pub-1901519090884740/9665641456';
 
 const Main = (props) => {
+
     useEffect(() => {
-
-
-
-
-
-        if(Platform.OS==="android")
+        if (Platform.OS === "android")
             InAppUpdate.checkUpdate()
         setListeners();
         checkRtl();
@@ -74,8 +74,8 @@ const Main = (props) => {
                 interstitial.show()
             }
         });
-        if(!__DEV__)
-        interstitial.load();
+        if (!__DEV__)
+            interstitial.load();
     }
 
     const checkIfUnderMaintainOrNeedUpdate = () => {
@@ -148,7 +148,7 @@ const Main = (props) => {
             messaging().onMessage((notification) => {
 
 
-                if(Platform.OS==="ios")
+                if (Platform.OS === "ios")
                     PushNotification.localNotification({
                         message: notification.notification.body,
                         title: notification.notification.title,
@@ -162,9 +162,9 @@ const Main = (props) => {
             })
             const courseCode = await getData(DEFINITIONS.COURSE_CODE);
 
-            console.log("props[DEFINITIONS.COURSE_CODE]",courseCode)
+            console.log("props[DEFINITIONS.COURSE_CODE]", courseCode)
             messaging()
-                .subscribeToTopic(""+courseCode)
+                .subscribeToTopic("" + courseCode)
                 .then(() => console.log('Subscribed to topic!'));
 
             PushNotification.createChannel(
@@ -195,12 +195,13 @@ const Main = (props) => {
                 [DEFINITIONS.USER_EMAIL]: await getData(DEFINITIONS.USER_EMAIL),
                 [DEFINITIONS.USER_IMAGE]: await getData(DEFINITIONS.USER_IMAGE),
             }
-         await   props[SET_STATE]({
+            await props[SET_STATE]({
                 [DEFINITIONS.TEXT_SIZE]: fontSize,
                 [DEFINITIONS.COURSE_CODE]: courseCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
                 [DEFINITIONS.USER]: user,
-                [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
+                [DEFINITIONS.SHOW_SPLASH_SCREEN]: false,
+
             })
             requestPermission();
         } else
@@ -319,36 +320,38 @@ const Main = (props) => {
     };
     const ShowUpdateScreen = () => {
         return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{color:'black',fontSize:calculateFontSizeByScreen(20),fontWeight:'bold'}}>עדכון גרסה</Text>
+            <Text style={{color: 'black', fontSize: calculateFontSizeByScreen(20), fontWeight: 'bold'}}>עדכון
+                גרסה</Text>
 
-            <Text style={{color:'black',fontSize:calculateFontSizeByScreen(16)}}>לחץ על הכפתור מטה על מנת לעדכן את האפליקציה</Text>
+            <Text style={{color: 'black', fontSize: calculateFontSizeByScreen(16)}}>לחץ על הכפתור מטה על מנת לעדכן את
+                האפליקציה</Text>
             <LottieView
                 autoPlay={true}
                 duration={7000}
                 loop={true}
                 resizeMode={'contain'}
                 style={{
-                    height:HEIGHT_OF_SCREEN/2,
-                    marginBottom:HEIGHT_OF_SCREEN/50
+                    height: HEIGHT_OF_SCREEN / 2,
+                    marginBottom: HEIGHT_OF_SCREEN / 50
 
                 }}
-                source={  require('../../res/animation/update.json')}
+                source={require('../../res/animation/update.json')}
             />
             <CustomButton
                 onPress={() => {
                     try {
                         if (Platform.OS === 'android') {
-                            Linking.openURL( 'market://details?id=com.jeffrey.academiccollage' );
+                            Linking.openURL('market://details?id=com.jeffrey.academiccollage');
                         } else {
-                            Linking.openURL( 'https://itunes.apple.com/us/app/expo-client/id1486600202?mt=8');
+                            Linking.openURL('https://itunes.apple.com/us/app/expo-client/id1486600202?mt=8');
                         }
                     } catch (e) {
                         console.log(e);
                     }
                 }}
                 textStyle={{
-                    color:'white',
-                    fontSize:calculateFontSizeByScreen(14)
+                    color: 'white',
+                    fontSize: calculateFontSizeByScreen(14)
                 }}
                 style={{
                     borderRadius: WIDTH_OF_SCREEN / 50,

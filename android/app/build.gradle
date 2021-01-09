@@ -30,8 +30,8 @@ android {
         applicationId "com.jeffrey.academiccollage"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 100
-        versionName "100.0"
+        versionCode 20
+        versionName "20.0"
         multiDexEnabled true
     }
     splits {

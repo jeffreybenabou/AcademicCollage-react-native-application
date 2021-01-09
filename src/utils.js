@@ -67,11 +67,11 @@ export const TYPE_OF_SNACK_BAR = {
     WARNING: 1,
     GOOD: 2
 }
-export const AppUnderMaintain=()=>{
-    return <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+export const AppUnderMaintain = () => {
+    return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{
-            fontSize:calculateFontSizeByScreen(16),
-            color:'black',
+            fontSize: calculateFontSizeByScreen(16),
+            color: 'black',
 
         }}>האפליקציה בתחזוקה כרגע, נחזור בהקדם...</Text>
         <LottieView style={{height: HEIGHT_OF_SCREEN / 2}}
@@ -80,11 +80,11 @@ export const AppUnderMaintain=()=>{
 }
 export const DEFINITIONS = {
     IS_LOG_IN: 'isLogIn',
-    NEED_UPDATE:'needUpdate',
-    APP_UNDER_MAINTAIN:'appUnderMaintain',
-    SHOW_SPLASH_SCREEN:'splashScreen',
+    NEED_UPDATE: 'needUpdate',
+    APP_UNDER_MAINTAIN: 'appUnderMaintain',
+    SHOW_SPLASH_SCREEN: 'splashScreen',
     TEXT_SIZE: 'textSize',
-    KEYBOARD_HEIGHT:'keyboardHeight',
+    KEYBOARD_HEIGHT: 'keyboardHeight',
     TEXT_ON_HEADER: 'textOnHeader',
     SHOW_SNACK_BAR: 'showSnackBar',
     ACTION_ON_SNACK_BAR: 'actionOnSnackBar',
@@ -139,31 +139,54 @@ export const CustomButton = (props) => {
             }
 
 
-
         </View>
         {
-            props.showLoader&&
-                <ActivityIndicator style={{position:'absolute'}} color={"black"} size={'100%'} animating={true}/>
+            props.showLoader &&
+            <ActivityIndicator style={{position: 'absolute'}} color={"black"} size={'100%'} animating={true}/>
         }
 
 
     </Ripple>
 }
 
-export const Popup=(props)=>{
+export const Popup = (props) => {
 
 
-    return <Modal visible={true} style={{
-        height:HEIGHT_OF_SCREEN/1.3,
-        width:WIDTH_OF_SCREEN/1.2
-    }} >
-        {
-            props.children
-        }
+    return <Modal
+        presentationStyle={"overFullScreen"}
+        visible={true}
+        transparent={true}>
+        <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: HEIGHT_OF_SCREEN,
+            width: WIDTH_OF_SCREEN,
+            backgroundColor: 'rgba(0,0,0,0.5)'
+        }}>
+
+
+                {
+                    props.children()
+                }
+
+
+        </View>
+
     </Modal>
 }
-Popup.props={
-    children:""
+Popup.props = {
+    children: ""
+}
+
+export const shuffleArray=(array)=> {
+    let i = array.length - 1;
+    for (; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
 }
 
 export const SCREEN_NAMES = {
@@ -180,74 +203,74 @@ export const SetIcon = (props) => {
 
         case ICON_TYPES.LEFT:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/left.png')}/>
+                              source={require('../res/icons/left.png')}/>
         case ICON_TYPES.PASSWORD:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/luggage.png')}/>
+                              source={require('../res/icons/luggage.png')}/>
         case ICON_TYPES.USER_NAME:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/user.png')}/>
+                              source={require('../res/icons/user.png')}/>
         case ICON_TYPES.FACEBOOK:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 10 + iconSize, height: WIDTH_OF_SCREEN / 10 + iconSize}}
-                          source={require('../res/icons/facebook.png')}/>
+                              source={require('../res/icons/facebook.png')}/>
         case ICON_TYPES.GMAIL:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/gmail.png')}/>
+                              source={require('../res/icons/gmail.png')}/>
         case ICON_TYPES.ALL_CATEGORIES:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
-                           source={require('../res/icons/tasks.png')}/>
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
+                       source={require('../res/icons/tasks.png')}/>
             </View>
         case ICON_TYPES.CHAT:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/chat.png')}/>
             </View>
         case ICON_TYPES.SOLUTION:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/testing.png')}/>
             </View>
         case ICON_TYPES.SETTINGS:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/options.png')}/>
             </View>
         case ICON_TYPES.HOME_WORK:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/comments.png')}/>
             </View>
         case ICON_TYPES.LOG_OUT:
-            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize,height: WIDTH_OF_SCREEN / 20 + iconSize}}>
-                <Image resizeMode={"contain"}  style={{flex:1,width:'100%'}}
+            return <View style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}>
+                <Image resizeMode={"contain"} style={{flex: 1, width: '100%'}}
                        source={require('../res/icons/exit.png')}/>
             </View>
         case ICON_TYPES.ARROW_DOWN:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/down-arrow.png')}/>
+                              source={require('../res/icons/down-arrow.png')}/>
         case ICON_TYPES.ARROW_UP:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/up-arrow.png')}/>
+                              source={require('../res/icons/up-arrow.png')}/>
         case ICON_TYPES.COPY:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/copy.png')}/>
+                              source={require('../res/icons/copy.png')}/>
         case ICON_TYPES.APPLE:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/apple.png')}/>
+                              source={require('../res/icons/apple.png')}/>
 
         case ICON_TYPES.CLOSE:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/close-icon-29.png')}/>
+                              source={require('../res/icons/close-icon-29.png')}/>
         case ICON_TYPES.DRAWER:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/menu.png')}/>
+                              source={require('../res/icons/menu.png')}/>
         case ICON_TYPES.FULL_SCREEN:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/full-screen.png')}/>
+                              source={require('../res/icons/full-screen.png')}/>
         case ICON_TYPES.SEARCH:
             return <FastImage style={{width: WIDTH_OF_SCREEN / 20 + iconSize, height: WIDTH_OF_SCREEN / 20 + iconSize}}
-                          source={require('../res/icons/search.png')}/>
+                              source={require('../res/icons/search.png')}/>
         default:
             return <View/>
     }
@@ -255,7 +278,7 @@ export const SetIcon = (props) => {
 }
 
 export const isNotUndefined = (value) => {
-    return typeof (value) !== undefined&& typeof (value) !== 'undefined'&&typeof (value) != 'undefined' && value != null && value != 'undefined';
+    return typeof (value) !== undefined && typeof (value) !== 'undefined' && typeof (value) != 'undefined' && value != null && value != 'undefined';
 };
 
 SetIcon.props = {
@@ -267,10 +290,10 @@ SetIcon.props = {
 export const ICON_TYPES = {
     FACEBOOK: 'facebook',
     COPY: 'copy',
-    SEARCH:'search',
-    FULL_SCREEN:'fullScreen',
+    SEARCH: 'search',
+    FULL_SCREEN: 'fullScreen',
     GMAIL: 'gmail',
-    CLOSE:'close',
+    CLOSE: 'close',
     USER_NAME: 'userName',
     PASSWORD: 'password',
     ALL_CATEGORIES: 'allCategories',
@@ -282,16 +305,25 @@ export const ICON_TYPES = {
     ARROW_DOWN: 'arrowDown',
     ARROW_UP: 'arrowUp',
     LEFT: 'left',
-    APPLE:'apple',
-    DRAWER:'menu'
+    APPLE: 'apple',
+    DRAWER: 'menu'
 
 
 }
-export const SplashScreen=()=>{
-    return <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:APP_COLOR.screenBackground,width:WIDTH_OF_SCREEN,height:HEIGHT_OF_SCREEN}}>
-        <FastImage style={{height:HEIGHT_OF_SCREEN/2,width: WIDTH_OF_SCREEN/1.5}} resizeMode={"contain"} source={require("../res/images/logo.png")}/>
-        <Text style={{fontSize:calculateFontSizeByScreen(20),color:'black',marginVertical:'5%'}}>תכף עולים...</Text>
-        <ActivityIndicator animating={true} size={WIDTH_OF_SCREEN/10} color={APP_COLOR.iconColor}/>
+export const SplashScreen = () => {
+    return <View style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: APP_COLOR.screenBackground,
+        width: WIDTH_OF_SCREEN,
+        height: HEIGHT_OF_SCREEN
+    }}>
+        <FastImage style={{height: HEIGHT_OF_SCREEN / 2, width: WIDTH_OF_SCREEN / 1.5}} resizeMode={"contain"}
+                   source={require("../res/images/logo.png")}/>
+        <Text style={{fontSize: calculateFontSizeByScreen(20), color: 'black', marginVertical: '5%'}}>תכף
+            עולים...</Text>
+        <ActivityIndicator animating={true} size={WIDTH_OF_SCREEN / 10} color={APP_COLOR.iconColor}/>
 
     </View>
 }
@@ -340,12 +372,12 @@ export const CustomInput = (props) => {
 
         <View style={{marginStart: WIDTH_OF_SCREEN / 80}}/>
         <TextInput placeholderTextColor={"gray"}
-            multiline={props.multiline}
-            autoCapitalize={"none"}
-            style={props.textStyle}
-            value={props.value}
-            onChangeText={props.onChangeText}
-            placeholder={props.placeholder}
+                   multiline={props.multiline}
+                   autoCapitalize={"none"}
+                   style={props.textStyle}
+                   value={props.value}
+                   onChangeText={props.onChangeText}
+                   placeholder={props.placeholder}
         />
 
 
@@ -361,7 +393,7 @@ CustomInput.props = {
     textStyle: '',
     iconType: '',
     iconSize: '',
-    multiline:''
+    multiline: ''
 
 }
 
@@ -373,8 +405,8 @@ CustomButton.props = {
     textStyle: '',
     iconSize: '',
     children: '',
-    showLoader:'',
-    disabled:''
+    showLoader: '',
+    disabled: ''
 
 }
 const style = StyleSheet.create({
