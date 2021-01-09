@@ -321,7 +321,7 @@ const AllCategories = (props) => {
                                 color: APP_COLOR.main,
                             }}>הידעת?</Text>
                         <Text style={{
-
+                            textAlign:'left',
                             padding: '6%',
                             fontSize: calculateFontSizeByScreen(15),
 
@@ -401,7 +401,9 @@ const AllCategories = (props) => {
                                 fontSize: calculateFontSizeByScreen(20),
                                 fontWeight: 'bold',
                                 minHeight: HEIGHT_OF_SCREEN / 15,
-                                borderRadius: WIDTH_OF_SCREEN / 10,
+                                borderRadius: WIDTH_OF_SCREEN / 13,
+                                borderTopRightRadius: 0,
+                                borderTopLeftRadius:0,
 
                                 backgroundColor: APP_COLOR.main
                             }}/>

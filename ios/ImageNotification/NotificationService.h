@@ -1,12 +1,12 @@
 //
 //  NotificationService.h
-//  NotificationsImages
+//  ImageNotification
 //
-//  Created by Elector on 29/12/2020.
+//  Created by Elector on 01/01/2021.
 //
 
 #import <UserNotifications/UserNotifications.h>
-#import "FirebaseMessaging.h"
+
 @interface NotificationService : UNNotificationServiceExtension
 
 @end

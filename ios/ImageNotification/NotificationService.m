@@ -1,12 +1,12 @@
 //
 //  NotificationService.m
-//  NotificationsImages
+//  ImageNotification
 //
-//  Created by Elector on 29/12/2020.
+//  Created by Elector on 01/01/2021.
 //
 
 #import "NotificationService.h"
-
+#import "FirebaseMessaging.h"
 @interface NotificationService ()
 
 @property (nonatomic, strong) void (^contentHandler)(UNNotificationContent *contentToDeliver);
@@ -21,9 +21,7 @@
     self.bestAttemptContent = [request.content mutableCopy];
     
     // Modify the notification content here...
-   [[FIRMessaging extensionHelper] populateNotificationContent:self.bestAttemptContent withContentHandler:contentHandler];
-
-    
+  [[FIRMessaging extensionHelper] populateNotificationContent:self.bestAttemptContent withContentHandler:contentHandler];
 }
 
 - (void)serviceExtensionTimeWillExpire {

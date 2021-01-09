@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import React, {useEffect, useState} from "react";
-import {View, StyleSheet, Image, Text, TextInput, Alert, Platform} from 'react-native';
+import {View, StyleSheet, Image, Text, TextInput, Alert, Platform, Keyboard} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {AccessToken,GraphRequestManager, GraphRequest, LoginManager} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
@@ -298,6 +298,7 @@ const LoginScreen = (props) => {
                             appleLogin();
 
                     } else {
+
                         props[SET_STATE]({
                             [DEFINITIONS.SNACK_BAR]: {
                                 [DEFINITIONS.SHOW_SNACK_BAR]: true,
@@ -308,6 +309,7 @@ const LoginScreen = (props) => {
                             }
                         })
                     }
+                    Keyboard.dismiss();
                 }}
                 textStyle={{textAlign: 'center', color: 'white'}}
                 text={"התחבר"}

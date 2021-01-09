@@ -180,10 +180,20 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                 }}>
                     {
                         Object.values(homeWorkObject).map((item) => {
-                            if (item.includes("%b%")) {
+                            if(item.includes("%title%")){
+                                return <Text
+                                    style={{
+                                        fontWeight:'bold',
+                                        textAlign: 'center',
+                                        padding: '2%',
+                                        fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                                    }}>{item.replace("%title%", "")}</Text>
+                            }
+                            else if (item.includes("%b%")) {
 
                                 return <Text
                                     style={{
+                                        fontWeight:'bold',
                                         textAlign: 'left',
                                         padding: '2%',
                                         fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])

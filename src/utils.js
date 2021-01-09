@@ -319,7 +319,7 @@ export const SplashScreen = () => {
         width: WIDTH_OF_SCREEN,
         height: HEIGHT_OF_SCREEN
     }}>
-        <FastImage style={{height: HEIGHT_OF_SCREEN / 2, width: WIDTH_OF_SCREEN / 1.5}} resizeMode={"contain"}
+        <FastImage style={{height: HEIGHT_OF_SCREEN / 1.5, width: WIDTH_OF_SCREEN / 1.5}} resizeMode={"contain"}
                    source={require("../res/images/logo.png")}/>
         <Text style={{fontSize: calculateFontSizeByScreen(20), color: 'black', marginVertical: '5%'}}>תכף
             עולים...</Text>
