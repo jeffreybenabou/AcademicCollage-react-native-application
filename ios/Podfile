@@ -13,6 +13,7 @@ target 'StudyReactNative' do
 
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
 
 target 'ImageNotification' do
   pod 'Firebase/Messaging', '~> 7.1.0' # eg 6.31.0
