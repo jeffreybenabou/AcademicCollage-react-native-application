@@ -53,12 +53,16 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
 import {BannerAd, BannerAdSize, TestIds} from '@react-native-firebase/admob';
 
 const adUnitIdBanner = __DEV__ ? TestIds.BANNER : 'ca-app-pub-1901519090884740/9665641456';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 const Main = (props) => {
 
     useEffect(() => {
         if (Platform.OS === "android")
             InAppUpdate.checkUpdate()
+
+         crashlytics()
+            .setCrashlyticsCollectionEnabled(true)
         setListeners();
         checkRtl();
         checkVersion();
