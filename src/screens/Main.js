@@ -17,7 +17,7 @@ import {
     SafeAreaView,
     Platform,
     Keyboard,
-    Linking, Button
+    Linking
 } from "react-native";
 
 
@@ -403,7 +403,7 @@ const Main = (props) => {
 
 
         </View>
-        <Button title="Crash" onPress={() => crashlytics().crash()} />
+
         {
             props[DEFINITIONS.SNACK_BAR][DEFINITIONS.SHOW_SNACK_BAR] &&
             <SnackBar props={props}/>
