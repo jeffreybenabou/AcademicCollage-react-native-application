@@ -371,7 +371,8 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 width: WIDTH_OF_SCREEN / 1.1,
                 borderRadius: WIDTH_OF_SCREEN / 10,
                 minHeight: HEIGHT_OF_SCREEN / 15,
-                backgroundColor: APP_COLOR.main
+                backgroundColor: APP_COLOR.main,
+                marginVertical:HEIGHT_OF_SCREEN/50
             }}
             onPress={() => {
                 const index = item.toString().replace("!image!", "").split("!index!")[1]

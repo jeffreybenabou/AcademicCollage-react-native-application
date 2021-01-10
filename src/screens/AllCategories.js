@@ -57,18 +57,6 @@ const AllCategories = (props) => {
                 visible: item.visible
             })
             openLessons2.push(false)
-            /*const view=<View>
-                {
-                    Object.values(item).map((test)=>{
-                        console.log(test)
-                        if(test.includes("%b%")){
-                            return <Text>testtt</Text>
-                        }
-                    })
-                }
-            </View>
-            lessons.push(view)*/
-
         })
         setLessons(lessons);
         setButtonPlaceHolder(buttonsPlaceHolder);
