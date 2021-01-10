@@ -197,6 +197,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
     if (item.includes("%title%")) {
         return <Text
             style={{
+                color:'black',
                 fontWeight: 'bold',
                 textAlign: 'center',
                 padding: '2%',

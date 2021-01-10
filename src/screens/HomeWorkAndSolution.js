@@ -29,10 +29,12 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
         if(filteredData.length>0){
 
             try {
-
-                flatListRef.current.scrollToIndex({index:HomeWorkAndSolutionProps.route.params.index})
                 setCurrentIndex(HomeWorkAndSolutionProps.route.params.index)
                 setHomeWorkObject(filteredData[HomeWorkAndSolutionProps.route.params.index].information)
+                setTimeout(()=>{
+                    flatListRef.current.scrollToIndex({index:HomeWorkAndSolutionProps.route.params.index})
+
+                },500)
             }catch (e){
                 setCurrentIndex(filteredData.length-1)
 
