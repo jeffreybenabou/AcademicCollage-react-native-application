@@ -1,6 +1,7 @@
 import {
     Dimensions,
     Text,
+    Linking,
     TouchableOpacity,
     StyleSheet,
     View,
@@ -192,7 +193,7 @@ export const shuffleArray = (array) => {
     return array;
 }
 
-export const typeOfComponent = (item, props) => {
+export const typeOfComponent = (item, props,colorOfCodeComponent) => {
     if (item.includes("%title%")) {
         return <Text
             style={{
@@ -204,7 +205,7 @@ export const typeOfComponent = (item, props) => {
     } else if (item.toString().includes("#code#")) {
         return <View style={{
 
-            backgroundColor: 'rgb(233,232,232)',
+            backgroundColor:colorOfCodeComponent?"white": 'rgb(233,232,232)',
 
             flexDirection: 'row',
             borderRadius: WIDTH_OF_SCREEN / 50,
@@ -381,9 +382,23 @@ export const typeOfComponent = (item, props) => {
 
         />
 
+    }else if(item.toString().includes("!link!")){
+        return  <Text
+            onPress={()=>{
+                Linking.openURL(item.toString().replace("!link!","")).catch(err => console.error('An error occurred', err));
+            }
+            }
+            style={{
+                borderBottomWidth:1,
+                fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
+                color: 'gray',
+                textAlign: 'left',
+            }}>{item.toString().replace("!link!","")}</Text>
+
     } else {
         return <Text
             style={{
+
                 fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                 color: 'gray',
                 textAlign: 'left',
