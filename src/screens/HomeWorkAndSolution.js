@@ -69,11 +69,12 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             const filteredData = [];
 
 
-            Object.keys(items.data()).map((info, index) => {
+            Object.keys(items.data()).sort().map((info, index) => {
                 if (index === Object.keys(items.data()).length - 1) {
                     setHomeWorkObject(items.data()[info].information);
                 }
                 filteredData.push(items.data()[info])
+
 
             })
 
