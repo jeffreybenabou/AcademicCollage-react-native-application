@@ -67,21 +67,14 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
         firestore()
             .collection(HomeWorkAndSolutionProps[DEFINITIONS.COURSE_CODE]).doc("homeWork").get().then((items) => {
             const filteredData = [];
-
-
             Object.keys(items.data()).sort().map((info, index) => {
                 if (index === Object.keys(items.data()).length - 1) {
                     setHomeWorkObject(items.data()[info].information);
                 }
                 filteredData.push(items.data()[info])
-
-
             })
-
             setFilteredData(filteredData);
             setData(filteredData);
-
-
         })
         firestore()
             .collection(HomeWorkAndSolutionProps[DEFINITIONS.COURSE_CODE]).doc("solution").get().then((items) => {
