@@ -134,7 +134,7 @@ const AllCategories = (props) => {
                                 fontSize: calculateFontSizeByScreen(20),
                                 fontWeight: 'bold',
                                 color: APP_COLOR.main,
-                            }}>הידעת?</Text>
+                            }}>הטיפ היומי!</Text>
                         <Text style={{
                             textAlign:'left',
                             padding: '6%',

@@ -200,6 +200,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 color:'black',
                 fontWeight: 'bold',
                 textAlign: 'center',
+                width:'100%',
                 padding: '2%',
                 fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE])
             }}>{item.replace("%title%", "")}</Text>
@@ -251,6 +252,18 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
             color: 'gray',
             fontWeight: 'bold'
         }}>{item.toString().replace(/%b%/g, "")}</Text>
+    } else if(item.toString().includes("!warning!")){
+        return <Text
+            style={{
+                width:'100%',
+                padding:'2.5%',
+                fontWeight:'bold',
+                textAlign:'center',
+                borderRadius:WIDTH_OF_SCREEN/50,
+                backgroundColor:'white',
+                fontSize: calculateFontSizeByScreen(12 + props[DEFINITIONS.TEXT_SIZE]),
+                color: 'red',
+            }}>{item.toString().replace("!warning!","").replace(/~/g, "\n")}</Text>
     } else if (item.toString().includes("~")) {
         return <Text
             style={{
@@ -307,15 +320,15 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
 
                                             transform: [
                                                 {
-                                                    rotate: '90deg'
+                                                    rotate:item.toString().includes("{transform:0}")?'0deg': '90deg'
                                                 }
                                             ],
                                             alignSelf: 'center',
                                             height:'100%',
-                                            width:HEIGHT_OF_SCREEN/1.2
+                                            width:'100%'
 
                                         }}
-                                        source={{uri: item.toString().replace("!image!", "")}}/>
+                                        source={{uri: item.toString().replace("!image!", "").replace("{transform:0}","")}}/>
 
                                 </ImageZoom>
                             </SafeAreaView>
@@ -338,7 +351,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                         marginBottom: HEIGHT_OF_SCREEN / 50
 
                     }}
-                    source={{uri: item.toString().replace("!image!", "")}}>
+                    source={{uri: item.toString().replace("!image!", "").replace("{transform:0}","")}}>
                     <View style={{
                         borderRadius: WIDTH_OF_SCREEN / 50,
                         margin: '1%',
@@ -376,7 +389,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 marginVertical:HEIGHT_OF_SCREEN/50
             }}
             onPress={() => {
-                const index = item.toString().replace("!image!", "").split("!index!")[1]
+                const index = item.toString().replace("!image!", "").replace("{transform:0}","").split("!index!")[1]
                 props.navigation.navigate(SCREEN_NAMES.HOME_WORK, {index: parseInt(index)});
             }
             }
@@ -397,9 +410,11 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 textAlign: 'left',
             }}>{item.toString().replace("!link!","")}</Text>
 
-    } else {
+    }  else {
         return <Text
             style={{
+
+
 
                 fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                 color: 'gray',
