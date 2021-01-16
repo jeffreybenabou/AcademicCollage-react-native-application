@@ -332,7 +332,6 @@ const style = StyleSheet.create({
     },
     sendButton: {
         backgroundColor: APP_COLOR.main,
-
     },
     socialLogin: {
         height: HEIGHT_OF_SCREEN / 15,

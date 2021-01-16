@@ -5,10 +5,8 @@ import {
     Linking,
     Text,
     FlatList,
-    SafeAreaView
 } from "react-native";
 
-import Clipboard from '@react-native-community/clipboard';
 
 import firestore from '@react-native-firebase/firestore'
 import {
@@ -17,14 +15,13 @@ import {
     DEFINITIONS,
     elevationShadowStyle,
     HEIGHT_OF_SCREEN, ICON_TYPES,
-    isNotUndefined, SCREEN_NAMES, SetIcon, shuffleArray, TYPE_OF_SNACK_BAR, typeOfComponent,
+    isNotUndefined,  shuffleArray, TYPE_OF_SNACK_BAR, typeOfComponent,
     WIDTH_OF_SCREEN
 } from "../utils";
 import {SET_STATE} from "../redux/types";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
-import ImageZoom from 'react-native-image-pan-zoom';
-import FastImage from "react-native-fast-image";
+
 
 const AllCategories = (props) => {
     const [lessons, setLessons] = useState([])
@@ -233,14 +230,19 @@ const AllCategories = (props) => {
     }, [didYouKnow])
 
     const loadDidYouKnow = () => {
-        firestore().collection(props[DEFINITIONS.COURSE_CODE]).doc("didYouKnow").get().then((test) => {
-            const didYouKnow = [];
-            Object.keys(test.data()).map((item) => {
-                didYouKnow.push(test.data()[item])
-            })
+        try {
+            firestore().collection(props[DEFINITIONS.COURSE_CODE]).doc("didYouKnow").get().then((test) => {
+                const didYouKnow = [];
+                Object.keys(test.data()).map((item) => {
+                    didYouKnow.push(test.data()[item])
+                })
 
-            setDidYouKnow(shuffleArray(didYouKnow))
-        })
+                setDidYouKnow(shuffleArray(didYouKnow))
+            })
+        }catch (e){
+
+        }
+
     }
     return <View style={style.container}>
         <View

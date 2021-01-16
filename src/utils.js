@@ -206,9 +206,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
             }}>{item.replace("%title%", "")}</Text>
     } else if (item.toString().includes("#code#")) {
         return <View style={{
-
             backgroundColor:colorOfCodeComponent?"white": 'rgb(233,232,232)',
-
             flexDirection: 'row',
             borderRadius: WIDTH_OF_SCREEN / 50,
         }}>

@@ -43,7 +43,7 @@ import RNRestart from "react-native-restart";
 import {getAppstoreAppMetadata} from "react-native-appstore-version-checker";
 import {InterstitialAd, AdEventType} from '@react-native-firebase/admob';
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-1901519090884740/6955333195';
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : Platform.OS==="android"? 'ca-app-pub-1901519090884740/6955333195':'ca-app-pub-1901519090884740/7534648587';
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: false,
@@ -52,7 +52,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
 
 import {BannerAd, BannerAdSize, TestIds} from '@react-native-firebase/admob';
 
-const adUnitIdBanner = __DEV__ ? TestIds.BANNER : 'ca-app-pub-1901519090884740/9665641456';
+const adUnitIdBanner = __DEV__ ? TestIds.BANNER :Platform.OS==="android"? 'ca-app-pub-1901519090884740/9665641456':'ca-app-pub-1901519090884740/8539790254';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 const Main = (props) => {
@@ -187,10 +187,11 @@ const Main = (props) => {
 
     }
     const checkIfUserIsConnected = async () => {
-        if (auth().currentUser != null) {
+        const courseCode = await getData(DEFINITIONS.COURSE_CODE);
+        if (auth().currentUser != null&&isNotUndefined(courseCode)) {
 
             setAdMob();
-            const courseCode = await getData(DEFINITIONS.COURSE_CODE);
+
 
             let fontSize = parseInt(await getData(DEFINITIONS.TEXT_SIZE))
             fontSize = isNaN(fontSize) ? 0 : fontSize
@@ -208,10 +209,15 @@ const Main = (props) => {
 
             })
             requestPermission();
-        } else
+        } else{
+            if(auth().currentUser != null)
+            await auth().signOut();
             props[SET_STATE]({
+                [DEFINITIONS.IS_LOG_IN]: false,
                 [DEFINITIONS.SHOW_SPLASH_SCREEN]: false
             })
+        }
+
 
     }
     const SnackBar = (props2) => {
