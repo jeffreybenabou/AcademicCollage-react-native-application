@@ -49,13 +49,12 @@ const LoginScreen = (props) => {
 
         if (isNotUndefined(user)) {
 
-            firestore().collection(courseCode).get().then(async (exist)=>{
 
-                 await  storeData([DEFINITIONS.COURSE_CODE],courseCode)
+            firestore().collection(courseCode).get().then(async (exist)=>{await  storeData([DEFINITIONS.COURSE_CODE],courseCode)
             await  storeData([DEFINITIONS.USER_NAME],user.name)
             await  storeData([DEFINITIONS.USER_EMAIL],user.email)
             await storeData([DEFINITIONS.USER_IMAGE],user.picture)
-          await  props[SET_STATE]({
+            await  props[SET_STATE]({
                 [DEFINITIONS.COURSE_CODE]:courseCode,
                 [DEFINITIONS.IS_LOG_IN]: true,
                 [DEFINITIONS.USER]:
@@ -69,7 +68,9 @@ const LoginScreen = (props) => {
 
             }).catch(()=>{
 
-                auth().signOut();
+
+
+
                 props[SET_STATE]({
                     [DEFINITIONS.SNACK_BAR]: {
                         [DEFINITIONS.SHOW_SNACK_BAR]: true,
@@ -79,6 +80,7 @@ const LoginScreen = (props) => {
 
                     }
                 })
+                auth().signOut();
             })
 
 
@@ -351,7 +353,7 @@ const style = StyleSheet.create({
         height: HEIGHT_OF_SCREEN / 15,
         width: WIDTH_OF_SCREEN / 1.2,
         borderRadius: WIDTH_OF_SCREEN / 15,
-
+        color:'black',
         paddingHorizontal: '5%',
         marginTop: '5%',
         backgroundColor: 'white',
@@ -363,7 +365,6 @@ const style = StyleSheet.create({
         borderRadius: WIDTH_OF_SCREEN / 15,
         justifyContent: 'center',
         paddingHorizontal: '5%',
-
         backgroundColor: 'white',
         ...elevationShadowStyle(3)
     },

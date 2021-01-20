@@ -106,10 +106,10 @@ const DrawerContent = (props) => {
             fontSize={props2[DEFINITIONS.TEXT_SIZE]}
             onPress={() => {
                 props2[SET_STATE]({
-                    [DEFINITIONS.TEXT_ON_HEADER]: 'צ׳ט'
+                    [DEFINITIONS.TEXT_ON_HEADER]: "צ'אט"
                 })
                 props.navigation.navigation.navigate(SCREEN_NAMES.QA)
-            }} icon={ICON_TYPES.CHAT} text={"צ׳ט"}/>
+            }} icon={ICON_TYPES.CHAT} text={"צ'אט"}/>
         <DrawerButton
             fontSize={props2[DEFINITIONS.TEXT_SIZE]}
             onPress={() => {

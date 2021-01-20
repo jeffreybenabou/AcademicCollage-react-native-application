@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {View, StyleSheet, FlatList, TouchableOpacity, Text, ScrollView, Platform} from "react-native";
+import {View, StyleSheet, FlatList, TouchableOpacity, Text, ScrollView, Platform, BackHandler} from "react-native";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
 import {
@@ -46,7 +46,11 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
 
     },[filteredData])
     useEffect(() => {
+        const {navigation}=HomeWorkAndSolutionProps;
+
+
         HomeWorkAndSolutionProps.navigation.addListener('blur', (e) => {
+            BackHandler.removeEventListener('hardwareBackPress');
             setFilteredData([])
             setData([])
             setFilteredData([])
@@ -54,7 +58,14 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
         });
         HomeWorkAndSolutionProps.navigation.addListener('focus', async (e) => {
             loadDataFromFireBase();
+            BackHandler.addEventListener('hardwareBackPress', () => {
+                navigation.goBack();
+                HomeWorkAndSolutionProps[SET_STATE]({
+                    [DEFINITIONS.TEXT_ON_HEADER]:'מערך שיעור'
+                })
+                return true;
 
+            });
 
 
 

@@ -9,7 +9,7 @@ import {
     Platform,
     TouchableOpacity,
     Alert,
-    SafeAreaView, Button
+    SafeAreaView, Button, BackHandler, Keyboard
 } from "react-native";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../redux/AppReducer";
@@ -53,6 +53,24 @@ class QA extends React.Component {
 
 
     componentDidMount() {
+
+        const {navigation}=this.props;
+        navigation.addListener('blur', () => {
+            BackHandler.removeEventListener('hardwareBackPress');
+
+        });
+        navigation.addListener('focus', async () => {
+
+            BackHandler.addEventListener('hardwareBackPress', () => {
+                navigation.goBack();
+                this.props[SET_STATE]({
+                    [DEFINITIONS.TEXT_ON_HEADER]:'מערך שיעור'
+                })
+                return true;
+
+            });
+
+        });
 
         firestore()
             .collection(this.props[DEFINITIONS.COURSE_CODE])

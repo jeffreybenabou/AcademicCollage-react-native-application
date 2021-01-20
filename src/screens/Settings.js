@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {View, StyleSheet, Text, Switch} from "react-native";
+import React, {useEffect, useState} from "react";
+import {View, StyleSheet, Text, Switch, BackHandler} from "react-native";
 import {connect} from "react-redux";
 import {Slider} from "@miblanchard/react-native-slider";
 
@@ -18,6 +18,26 @@ import {SET_STATE} from "../redux/types";
 const Settings = (mainProps) => {
 
     const [valueOnSlider, setValueOnSlider] = useState(mainProps[DEFINITIONS.TEXT_SIZE]);
+    useEffect(()=>{
+        mainProps.navigation.addListener('blur', (e) => {
+            BackHandler.removeEventListener('hardwareBackPress');
+
+        });
+        mainProps.navigation.addListener('focus', async (e) => {
+
+            BackHandler.addEventListener('hardwareBackPress', () => {
+                mainProps.navigation.goBack();
+                mainProps[SET_STATE]({
+                    [DEFINITIONS.TEXT_ON_HEADER]:'מערך שיעור'
+                })
+                return true;
+
+            });
+
+
+
+        });
+    },[])
 
     return <View style={style.container}>
         <View style={{
