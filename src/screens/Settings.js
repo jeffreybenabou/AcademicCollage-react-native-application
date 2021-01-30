@@ -87,7 +87,7 @@ const Settings = (mainProps) => {
 
                     }}
                     onValueChange={(item)=>{
-                        console.log(item)
+
 
                         setValueOnSlider(item[0])
                         mainProps[SET_STATE]({

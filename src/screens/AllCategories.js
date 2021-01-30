@@ -68,7 +68,7 @@ const AllCategories = (props) => {
             .get()
             .then(lessons => {
                 const lessonsToAdd = [];
-                Object.keys(lessons._data).map((item) => {
+                Object.keys(lessons._data).sort().map((item) => {
                     lessonsToAdd.push(lessons._data[item])
                 })
                 setTheConfigItem(lessonsToAdd);

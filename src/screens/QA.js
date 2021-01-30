@@ -345,7 +345,7 @@ class QA extends React.Component {
                         borderRadius: HEIGHT_OF_SCREEN / 15 / 2
                     }}
                     onPress={() => {
-                        console.log("ASfasfasfsafasfsaffasasfafssfa")
+
                         if (this.state.messageValue.length > 0) {
                             this.setState({
                                 messageIsSending:true
@@ -388,7 +388,7 @@ class QA extends React.Component {
                                     console.log('Image uploaded to the bucket!');
                                 }).catch((e) => console.log('uploading image error => ', e));
                             })
-                            console.log(this.state.messageValue)
+
 
                             firestore()
                                 .collection(this.props[DEFINITIONS.COURSE_CODE])

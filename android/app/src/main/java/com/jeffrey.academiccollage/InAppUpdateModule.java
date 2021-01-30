@@ -41,6 +41,7 @@ implements InstallStateUpdatedListener, LifecycleEventListener {
                 if (resultCode != RESULT_OK) {
                     System.out.println("Update flow failed! Result code: " + resultCode);
                     // If the update is cancelled or fails,
+                    checkUpdate();
                     // you can request to start the update again.
                 }
             }

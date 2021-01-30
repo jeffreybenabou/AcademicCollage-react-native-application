@@ -116,12 +116,7 @@ const Main = (props) => {
     const checkVersion = () => {
         getAppstoreAppMetadata("com.supercell.clashofclans") //put any apps packageId here
             .then(metadata => {
-                console.log(
-                    "clashofclans android app version on playstore",
-                    metadata.version,
-                    "published on",
-                    metadata.currentVersionReleaseDate
-                );
+
             })
             .catch(err => {
                 console.log("error occurred", err);
@@ -166,10 +161,7 @@ const Main = (props) => {
             })
             const courseCode = await getData(DEFINITIONS.COURSE_CODE);
 
-            console.log("props[DEFINITIONS.COURSE_CODE]", courseCode)
-            messaging()
-                .subscribeToTopic("" + courseCode)
-                .then(() => console.log('Subscribed to topic!'));
+          await  messaging().subscribeToTopic("" + courseCode);
 
             PushNotification.createChannel(
                 {
@@ -179,9 +171,7 @@ const Main = (props) => {
                     soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
                     importance: 4, // (optional) default: 4. Int value of the Android notification importance
                     vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-                },
-                (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-            );
+                });
 
         }
 

@@ -249,8 +249,12 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
             textAlign: 'left',
             color: 'gray',
             fontWeight: 'bold'
-        }}>{item.toString().replace(/%b%/g, "")}</Text>
+        }}>{item.toString().replace(/%b%/g, "").replace(/~/g, "\n")}</Text>
     } else if(item.toString().includes("!warning!")){
+        let colorOnText="red";
+        if(isNotUndefined(item.toString().split("@")[1]))
+            colorOnText=item.toString().split("@")[1]
+
         return <Text
             style={{
                 width:'100%',
@@ -260,8 +264,8 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 borderRadius:WIDTH_OF_SCREEN/50,
                 backgroundColor:'white',
                 fontSize: calculateFontSizeByScreen(12 + props[DEFINITIONS.TEXT_SIZE]),
-                color: 'red',
-            }}>{item.toString().replace("!warning!","").replace(/~/g, "\n")}</Text>
+                color: colorOnText,
+            }}>{item.toString().replace("@"+colorOnText+"@","").replace("!warning!","").replace(/~/g, "\n")}</Text>
     } else if (item.toString().includes("~")) {
         return <Text
             style={{
@@ -396,9 +400,11 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
         />
 
     }else if(item.toString().includes("!link!")){
+
+
         return  <Text
             onPress={()=>{
-                Linking.openURL(item.toString().replace("!link!","")).catch(err => console.error('An error occurred', err));
+                Linking.openURL(item.toString().replace(item.toString().split("@")[1],"").replace("!link!","")).catch(err => console.error('An error occurred', err));
             }
             }
             style={{
@@ -406,7 +412,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
                 fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                 color: 'gray',
                 textAlign: 'left',
-            }}>{item.toString().replace("!link!","")}</Text>
+            }}>{item.toString().split("@")[1]}</Text>
 
     }  else {
         return <Text
@@ -426,7 +432,8 @@ export const SCREEN_NAMES = {
     QA: 'qa',
     SETTINGS: 'settings',
     HOME_WORK: 'homeWork',
-    SOLUTION: 'solution'
+    SOLUTION: 'solution',
+    COMMON_QA:'commonQA'
 }
 export const SetIcon = (props) => {
     let iconSize = isNotUndefined(props.iconSize) ? props.iconSize : 0;

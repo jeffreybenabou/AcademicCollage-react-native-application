@@ -107,25 +107,22 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
             onPress={() => {
                 setHomeWorkObject(filteredData[itemProps.index].information);
                 setCurrentIndex(itemProps.index);
-
             }}
             text={itemProps.item.titleOfWork}
             textStyle={{
 
                 textAlign: 'center',
                 color: 'white',
-
                 fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
             }}
 
 
             style={{
-
                 borderColor: currentIndex == itemProps.index ? "black" : 'transparent',
                 borderRadius: HEIGHT_OF_SCREEN / 30,
                 marginEnd: WIDTH_OF_SCREEN / 30,
                 borderWidth: 1,
-                padding: WIDTH_OF_SCREEN / 30,
+                paddingHorizontal:WIDTH_OF_SCREEN/50,
                 backgroundColor: APP_COLOR.main,
             }}
 
@@ -143,8 +140,9 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     flex: 1,
                     textAlign: 'right',
                     color: 'black',
+
                     paddingStart: WIDTH_OF_SCREEN / 25,
-                    fontSize: calculateFontSizeByScreen(14 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
+                    fontSize: calculateFontSizeByScreen(11 + HomeWorkAndSolutionProps[DEFINITIONS.TEXT_SIZE])
                 }}
                 onChangeText={(value) => {
                     setValue(value);
@@ -174,7 +172,6 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                     filteredData.length>0&&
                     <FlatList
                         onContentSizeChange={(e) => {
-
                             flatListRef.current.scrollToOffset({offset:Platform.OS==="android"?-e: e})
                         }}
                         ref={flatListRef}
@@ -182,7 +179,8 @@ export const HomeWorkAndSolution = (HomeWorkAndSolutionProps) => {
                         style={{marginHorizontal: '5%'}}
                         horizontal={true}
                         data={filteredData}
-                        renderItem={RenderItem} snapToAlignment={"end"}
+                        renderItem={RenderItem}
+                        snapToAlignment={"end"}
                     />
 
                 }

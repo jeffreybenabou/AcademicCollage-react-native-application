@@ -22,6 +22,7 @@ import QA from "../screens/QA";
 import Settings from "../screens/Settings";
 import HomeWorkAndSolution from "../screens/HomeWorkAndSolution";
 import Ripple from "react-native-material-ripple";
+import CommonQA from "../screens/CommonQA";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -64,6 +65,7 @@ const DrawerNavigation = (props) => {
                     <Stack.Screen name={SCREEN_NAMES.QA} component={QA}/>
                     <Stack.Screen name={SCREEN_NAMES.HOME_WORK} component={HomeWorkAndSolution}/>
                     <Stack.Screen name={SCREEN_NAMES.SETTINGS} component={Settings}/>
+                    <Stack.Screen name={SCREEN_NAMES.COMMON_QA} component={CommonQA}/>
                 </Stack.Navigator>}
             </Drawer.Screen>
 
@@ -118,6 +120,15 @@ const DrawerContent = (props) => {
                 })
                 props.navigation.navigation.navigate(SCREEN_NAMES.HOME_WORK)
             }} icon={ICON_TYPES.HOME_WORK} text={"תרגילים"}/>
+        {/*<DrawerButton
+            fontSize={props2[DEFINITIONS.TEXT_SIZE]}
+            onPress={() => {
+                props2[SET_STATE]({
+                    [DEFINITIONS.TEXT_ON_HEADER]: "שאלות נפוצות"
+                })
+                props.navigation.navigation.navigate(SCREEN_NAMES.COMMON_QA)
+            }} icon={ICON_TYPES.CHAT} text={"שאלות נפוצות"}/>*/}
+
 
         <DrawerButton
             fontSize={props2[DEFINITIONS.TEXT_SIZE]}

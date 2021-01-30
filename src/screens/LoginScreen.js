@@ -139,6 +139,7 @@ const LoginScreen = (props) => {
 
         auth().signInWithCredential(facebookCredential).catch((e) => {
 
+            console.log(e)
 
 
 
