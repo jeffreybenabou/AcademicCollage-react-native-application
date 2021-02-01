@@ -404,7 +404,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
 
         return  <Text
             onPress={()=>{
-                Linking.openURL(item.toString().replace(item.toString().split("@")[1],"").replace("!link!","")).catch(err => console.error('An error occurred', err));
+                Linking.openURL(item.toString().replace("@","").replace(item.toString().split("@")[1],"").replace("!link!","")).catch(err => console.error('An error occurred', err));
             }
             }
             style={{
