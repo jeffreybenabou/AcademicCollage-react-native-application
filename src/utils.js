@@ -234,7 +234,7 @@ export const typeOfComponent = (item, props,colorOfCodeComponent) => {
 
                 style={{
                     flex: 1,
-                    margin: '5%',
+                    margin: '2.5%',
 
                     fontSize: calculateFontSizeByScreen(14 + props[DEFINITIONS.TEXT_SIZE]),
                     color: 'black',

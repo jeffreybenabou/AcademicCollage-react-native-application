@@ -28,8 +28,8 @@ android {
         applicationId "com.jeffrey.academiccollage"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 104
-        versionName "104.0.4"
+        versionCode 105
+        versionName "104.0.5"
         multiDexEnabled true
     }
 
