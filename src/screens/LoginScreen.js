@@ -120,7 +120,7 @@ const LoginScreen = (props) => {
 
             setUser(user_)
         }).catch((response) => {
-
+            console.log(response)
 
         });
     }

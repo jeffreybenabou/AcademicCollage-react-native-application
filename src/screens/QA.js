@@ -351,6 +351,7 @@ class QA extends React.Component {
                                 messageIsSending:true
                             })
                             const date = new Date();
+                            console.log(date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear())
                             const objectToAdd = {
                                 [date.getTime()]: {
                                     images: [],
@@ -359,7 +360,7 @@ class QA extends React.Component {
                                     name: this.props[DEFINITIONS.USER][DEFINITIONS.USER_NAME],
                                     img: this.props[DEFINITIONS.USER][DEFINITIONS.USER_IMAGE],
                                     email: this.props[DEFINITIONS.USER][DEFINITIONS.USER_EMAIL],
-                                    date: date.getDay() + "/" + date.getDate() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
+                                    date: date.getDate() + "/" + (date.getMonth()+1)  + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
                                 }
 
                             }
@@ -375,10 +376,10 @@ class QA extends React.Component {
                                         .ref(date.getTime() + "/" + index)
                                         .getDownloadURL();
 
-                                    if (!send) {
+                                    /*if (!send) {
                                         send = true;
                                         this.sendNotification("הודעה מאת- " + this.props[DEFINITIONS.USER][DEFINITIONS.USER_NAME], this.state.messageValue, ref);
-                                    }
+                                    }*/
 
                                     objectToAdd[date.getTime()].images.push(ref)
                                     await firestore()
