@@ -19,6 +19,7 @@ import Tooltip from "rn-tooltip";
 import {SET_STATE} from "../redux/types";
 import {firebase} from "@react-native-firebase/firestore";
 import appleAuth from "@invertase/react-native-apple-authentication";
+import crashlytics from '@react-native-firebase/crashlytics';
 
 
 const LoginScreen = (props) => {
@@ -92,37 +93,46 @@ const LoginScreen = (props) => {
         const appleAuthRequestResponse = await appleAuth.performRequest({
             requestedOperation: appleAuth.Operation.LOGIN,
             requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-        }).then(()=>{
-
-        }).catch(()=>{
-
         });
 
-        // Ensure Apple returned a user identityToken
-        if (!appleAuthRequestResponse.identityToken) {
-            throw 'Apple Sign-In failed - no identify token returned';
+        // 2). if the request was successful, extract the token and nonce
+        const { identityToken, nonce } = appleAuthRequestResponse;
+
+        // can be null in some scenarios
+        if (identityToken) {
+            // 3). create a Firebase `AppleAuthProvider` credential
+            const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+
+            // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
+            //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
+            //     to link the account to an existing user
+            const userCredential = await firebase.auth().signInWithCredential(appleCredential).then((user)=>{
+                let user_={
+                    name:"",
+                    email:''
+                }
+                try {
+                     user_={
+                        name:userCredential.user.name,
+                        email:userCredential.user.email,
+                        picture:''
+                    }
+                }catch (e){
+                    crashlytics().recordError(e);
+                }
+
+
+                setUser(user_)
+            }).catch((e)=>{
+                crashlytics().recordError(e);
+            });
+
+            // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+            console.warn(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`);
+        } else {
+
+            // handle this - retry?
         }
-
-        // Create a Firebase credential from the response
-        const {identityToken, nonce} = appleAuthRequestResponse;
-        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-
-
-
-        // Sign the user in with the credential
-        return auth().signInWithCredential(appleCredential).then((respone) => {
-
-            const user_={
-                name:respone.additionalUserInfo.profile.name,
-                email:respone.additionalUserInfo.profile.email,
-                picture:''
-            }
-
-            setUser(user_)
-        }).catch((response) => {
-            console.log(response)
-
-        });
     }
     const FacebookLogin = async () => {
         const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
